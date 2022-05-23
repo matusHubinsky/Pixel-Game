@@ -4,6 +4,7 @@ Simple 2D pixel game written in C using SDL library
 
 # Controls
 
+<p>
 W       move up
 A       move left
 S       move down
@@ -16,3 +17,4 @@ Right   attack
 
 Esp     close game
 Space   respawn
+</p>
