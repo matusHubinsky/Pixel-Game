@@ -1,3 +1,3 @@
 # Pixel-Game
 
-Simple 2D pixel game writen in C using SDL library 
+Simple 2D pixel game written in C using SDL library 
