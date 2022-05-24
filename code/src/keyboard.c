@@ -26,7 +26,9 @@ void keyboard(SDL_Event event)
     {
         switch (event.key.keysym.sym)
         {        
-            // pohyb
+            //-------------------------------------------------------------
+            // MOVEMENT
+            //-------------------------------------------------------------
             case SDLK_a:
                 player.velocity_x = -1;
                 break;
@@ -42,16 +44,21 @@ void keyboard(SDL_Event event)
              case SDLK_s:
                 player.velocity_y = 1;
                 break;
+            //-------------------------------------------------------------
 
-            // mapa
+            // MAP
             case SDLK_m:
                 DoorMap();            
                 break;
 
+            // FULLSCREEN
             case SDLK_f:
                 ToggleFullscreen(window); 
                 break;
 
+            //-------------------------------------------------------------
+            // ATTACK
+            //-------------------------------------------------------------
             case SDLK_UP:
                 PlayerAttack(&player, true, false, false, false);
                 player.a_up = true;
@@ -71,7 +78,9 @@ void keyboard(SDL_Event event)
                 PlayerAttack(&player, false, false, false, true);
                 player.a_right = true;
                 break;
+            //-------------------------------------------------------------
 
+            // REBORN
             case SDLK_SPACE:
                 if (player.health == 0)
                 {
@@ -79,13 +88,16 @@ void keyboard(SDL_Event event)
                     InitReborn();
                 }
                 break;
-                
+
+            // CLOSE GAME
             case SDLK_ESCAPE:
                 player.health = 0;
                 quit = true;
                 break;
 
             default:
+                if (KEYS[event.key.keysym.sym]) KEYS[event.key.keysym.sym] = false;
+                else KEYS[event.key.keysym.sym] = true; 
                 break;
         }
     }
@@ -93,7 +105,6 @@ void keyboard(SDL_Event event)
 
     if (event.type == SDL_KEYUP)
     {
-
         switch (event.key.keysym.sym)
         { 
             case SDLK_a:

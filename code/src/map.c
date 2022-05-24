@@ -76,8 +76,7 @@ void CreateMap() // nacitanie textur
 
 void DoorMap() // teleportacia pri vstupe do dveri
 {
-    printf("Mapa: %i   %i %i\n", lvlN, player.rec.x, player.rec.y);
-
+    // printf("Mapa: %i   %i %i\n", lvlN, player.rec.x, player.rec.y);
     if (player.rec.x >= 32 && player.rec.x <= 64)
     {
         if ((player.rec.y >= 416 && player.rec.y <= 448) || (player.rec.y >= 480 && player.rec.y <= 512))
@@ -115,23 +114,20 @@ void DoorMap() // teleportacia pri vstupe do dveri
 void WorldMap() // nastavenie dveri
 {
     for (int i = 0; i < 4; i++)
-    {
-        if (world[i] != NULL)
-        {   
-            if (i != 3)
-            {
-                world[i][13][38] = 2;
-                world[i][14][38] = 2;
-                world[i][15][38] = 2;
-                world[i][16][38] = 2;
-            }
-            if (i != 0)
-            {
-                world[i][13][1] = 2;
-                world[i][14][1] = 2;
-                world[i][15][1] = 2;
-                world[i][16][1] = 2;
-            }
+    {  
+        if (i != 3)
+        {
+            world[i][13][38] = 2;
+            world[i][14][38] = 2;
+            world[i][15][38] = 2;
+            world[i][16][38] = 2;
+        }
+        if (i != 0)
+        {
+            world[i][13][1] = 2;
+            world[i][14][1] = 2;
+            world[i][15][1] = 2;
+            world[i][16][1] = 2;
         }
     }
 }

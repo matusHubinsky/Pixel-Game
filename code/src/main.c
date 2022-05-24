@@ -1,6 +1,5 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_opengl.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,7 +41,7 @@ float mouseX;
 float mouseY;
 
 _Bool quit = false;
-// _Bool KEYS[322]; 
+_Bool KEYS[322]; 
 
 lvl Cmap;
 
@@ -76,7 +75,7 @@ int main(int argc, char* args[])
         SDL_Event e;
 
         int frameTime;            
-        const int FPS = 30;
+        const int FPS = 60;
         const int frameDelay = 1000 / FPS;
         long long int frameStart;
 
@@ -98,7 +97,6 @@ int main(int argc, char* args[])
                 else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
                 {
                     keyboard(e);
-                    // DrawAll();
                 }
                 else if (e.type == SDL_MOUSEMOTION)
                 {
@@ -114,7 +112,6 @@ int main(int argc, char* args[])
                         AI();
                         updatePhysic();
                         DrawAll();
-
                         frameTime = SDL_GetTicks() - frameStart;
                     }   
                 }

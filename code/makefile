@@ -1,6 +1,6 @@
 
 CC = gcc
-CFLAGS = -std=c11 -m64 -g -Wall -I -lSDL2main -lSDL2 -lSDL2_image -lm
+CFLAGS = -std=c11 -m64 -03 -g -Wall -I -lSDL2main -lSDL2 -lSDL2_image -lm
 BIN = pixelgame
 #DEST = bin/debug/main 
 
@@ -12,3 +12,6 @@ pixelgame: src/*.c include/*.h
 
 run:
 	gcc -c src/*.c -std=c11 -m64 -g -Wall -I include && gcc *.o -o ./pixelgame -lSDL2main -lSDL2 -lSDL2_image -lm && ./pixelgame
+
+clean:
+	rm *.o pixelgame

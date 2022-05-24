@@ -130,7 +130,7 @@ void DrawLight()
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0x50);
         SDL_RenderDrawLine(renderer, mouseX, mouseY, mouseX+(250*dX), mouseY+(250*dY));
     }
-    printf("\n");
+    // printf("\n");
 }
 
 
@@ -190,7 +190,7 @@ void DrawDark()
 void VisibleEdges()
 {
     SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
-    printf("%i\n", visible_map_index);
+    // printf("%i\n", visible_map_index);
 
     if (player.skin == 1)
     {
@@ -216,8 +216,7 @@ void VisibleEdges()
 
 void VisibleTriangles()
 {
-    printf("%i\n", visible_map_index);
-
+    // printf("%i\n", visible_map_index);
     if (player.skin == 1)
     {
         for (int i = 0; i < visible_map_index -1 ; i++)
@@ -391,35 +390,31 @@ void DrawAll()
 {
     if (player.health != 0)
     {
+        // SDL set up
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
         SDL_RenderClear(renderer);
-
         SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
-        DrawMap();
-        DrawCreatures();            
-        //DrawLight();
+        // my texture rendering
+        DrawMap();                          // map 
+        DrawCreatures();                    // creatures
 
-        DrawEdges();
-        DrawBlocks();
-    
-        VisibleEdges();
-        
-        if (number == 2)
+        if (KEYS[SDLK_1]) DrawBlocks();     // draw all blocks          (blue)
+        if (KEYS[SDLK_2]) DrawEdges();      // draw all edges           (red)
+        if (KEYS[SDLK_3]) VisibleEdges();   // draw all visible lines   (green)
+
+        if (number == 3)
         {
             Intersections1();
             number = 0;
         }
+        number++;
          
-        // DrawDark();
-        // VisibleTriangles();
-
         if (player.skin == 2) ChangePlayerPicture(velocity_x, velocity_y);
 
-        enemySight();
+        if (KEYS[SDLK_4]) enemySight();     // draw enemy lines of sight
 
+        // SDL render
         SDL_RenderPresent(renderer);
-
-        number++;
     }
 }

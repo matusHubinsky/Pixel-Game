@@ -9,6 +9,34 @@
 #include <string.h>
 
 
+void Merge()
+{
+    Vedge points[visible_map_index];
+    int k = 0;
+
+    for (int i = 0; i < visible_map_index - 1; i++)
+    {
+        if ((fabs(visibleMap[i].x - visibleMap[i + 1].x) > 10.0f)) // && ((fabs(visibleMap[i].x - points[k].x) >= dis)))
+        {
+            points[k] = visibleMap[i];
+            k++;
+        }
+
+        else if ((fabs(visibleMap[i].y - visibleMap[i + 1].y) > 10.0f)) // && ((fabs(visibleMap[i].y - points[k].y) >= dis)))
+        {
+            points[k] = visibleMap[i];
+            k++;
+        }
+    }
+    // printf("%i %i\n", visible_map_index, k);
+    for (int i = 0; i < k; i++)
+    {
+        visibleMap[i] = points[i];
+    }
+    visible_map_index = k;
+}
+
+
 void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch)
 {
     sx += 1;
@@ -223,12 +251,9 @@ void Intersections1()
             }
         }
     }
-
     player.rec.x -= 16;
     player.rec.y -= 16;
-
     // this fix is awesome
-
     Vedge swap;
 
     for (int i = 0; i < visible_map_index; i++)
@@ -243,34 +268,5 @@ void Intersections1()
             }
         }
     }
-
     Merge();
-}
-
-
-void Merge()
-{
-    Vedge points[visible_map_index];
-    int k = 0;
-
-    for (int i = 0; i < visible_map_index - 1; i++)
-    {
-        if ((fabs(visibleMap[i].x - visibleMap[i + 1].x) > 10.0f)) // && ((fabs(visibleMap[i].x - points[k].x) >= dis)))
-        {
-            points[k] = visibleMap[i];
-            k++;
-        }
-
-        else if ((fabs(visibleMap[i].y - visibleMap[i + 1].y) > 10.0f)) // && ((fabs(visibleMap[i].y - points[k].y) >= dis)))
-        {
-            points[k] = visibleMap[i];
-            k++;
-        }
-    }
-    // printf("%i %i\n", visible_map_index, k);
-    for (int i = 0; i < k; i++)
-    {
-        visibleMap[i] = points[i];
-    }
-    visible_map_index = k;
 }

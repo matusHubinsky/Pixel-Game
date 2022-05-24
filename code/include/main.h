@@ -67,6 +67,7 @@ extern lvl lvl3;
 extern lvl lvl4;
 
 extern _Bool quit;
+extern _Bool KEYS[322];
 
 extern SDL_Window* window;
 

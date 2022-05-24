@@ -51,6 +51,8 @@ bool InitWorld()
     SDL_SetWindowIcon(window, icon);
     SDL_SetWindowTitle(window, "Pixel Game");
 
+    for (int i = 0; i < 322; i++) KEYS[i] = false; 
+
     return status;
 }
 
