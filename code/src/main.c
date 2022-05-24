@@ -1,5 +1,3 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,7 +13,6 @@
 #include "world.h"
 #include "vector.h"
 #include "physic.h"
-
 
 const int screen_width = 1280;
 const int screen_heigth = 960;

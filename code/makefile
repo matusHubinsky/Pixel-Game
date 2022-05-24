@@ -1,8 +1,8 @@
 
 CC = gcc
-CFLAGS = -std=c11 -m64 -03 -g -Wall -I -lSDL2main -lSDL2 -lSDL2_image -lm
-BIN = pixelgame
-#DEST = bin/debug/main 
+CFLAGS = -std=c11 -m64 -O4 -g -Wall -I 
+OFLAGS = -lSDL2main -lSDL2 -lSDL2_image -lm
+GAME = /home/leviathan/Documents/VUT/git/PixelGame/game/pixelgame
 
 all:
 	$(BIN)	
@@ -11,7 +11,8 @@ pixelgame: src/*.c include/*.h
 	$(CC) $(CFLAGS) $< -c -o $@ 
 
 run:
-	gcc -c src/*.c -std=c11 -m64 -g -Wall -I include && gcc *.o -o ./pixelgame -lSDL2main -lSDL2 -lSDL2_image -lm && ./pixelgame
+	$(CC) -c src/*.c $(CFLAGS) include && gcc *.o -o $(GAME) $(OFLAGS) 
+	$(CC) -c src/*.c $(CFLAGS) include && gcc *.o -o ./pixelgame $(OFLAGS) && ./pixelgame
 
 clean:
 	rm *.o pixelgame
