@@ -6,6 +6,8 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_thread.h>
+#include <SDL2/SDL_ttf.h>
 
 #define NORTH 0
 #define SOUTH 1
@@ -13,6 +15,8 @@
 #define WEST 3
 
 #define enemy_number 4
+
+extern float secondsElapsed;
 
 // constans
 extern const int screen_width;

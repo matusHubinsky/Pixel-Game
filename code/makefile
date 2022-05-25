@@ -1,7 +1,7 @@
 
 CC = gcc
 CFLAGS = -std=c11 -m64 -O4 -g -Wall -I 
-OFLAGS = -lSDL2main -lSDL2 -lSDL2_image -lm
+OFLAGS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lm
 GAME = /home/leviathan/Documents/VUT/git/PixelGame/game/pixelgame
 
 all:

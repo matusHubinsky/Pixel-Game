@@ -14,13 +14,16 @@
 #include "vector.h"
 #include "physic.h"
 
+
+float secondsElapsed = 0.0f;
+
 const int screen_width = 1280;
 const int screen_heigth = 960;
 const int map_width = 40;
 const int map_height = 30;
 
 // long long time, ltime, dtime = 0;
-float velocity_x, velocity_y = 0;
+float velocity_x, velocity_y = 0.0f;
 // int enemy_number = 2;
 
 int step_walk = 32;     
@@ -80,16 +83,22 @@ int main(int argc, char* args[])
         RewriteMap(map, world[lvlN]);
         CreateMap();
 
+        int start = 0;
+        int end = 0;
+
         while (quit != true)
         {
+            start = SDL_GetPerformanceCounter();
+            frameStart = SDL_GetTicks();
+            
             AI();
             updatePhysic();
+            Intersections1();
             DrawAll();            
             
             while (SDL_PollEvent(&e) != 0)
             {
-                frameStart = SDL_GetTicks();
-                
+         
                 if (e.type == SDL_QUIT) quit = true;
                 else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
                 {
@@ -100,7 +109,7 @@ int main(int argc, char* args[])
                     mouseX = e.motion.x;
                     mouseY = e.motion.y;
                 }
-                else
+               else
                 {
                     frameTime = SDL_GetTicks() - frameStart;
 
@@ -108,11 +117,16 @@ int main(int argc, char* args[])
                     {
                         AI();
                         updatePhysic();
+                        Intersections1();
                         DrawAll();
                         frameTime = SDL_GetTicks() - frameStart;
                     }   
                 }
             }   
+            end = SDL_GetPerformanceCounter();
+            secondsElapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
+            // printf("FPS %f\n", 1.0f / secondsElapsed);
+            // print average FPS
         }
 	}
 

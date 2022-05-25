@@ -35,7 +35,6 @@ float cross_produce(int v1[2], int v2[2])
     return result;   
 }
 
-
 void draw_circle(int cx, int cy, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -376,6 +375,34 @@ void AttackAnimation(bool up, bool down, bool left, bool right)
 }
 
 
+void DrawFPS()
+{
+        //this opens a font style and sets a size
+    TTF_Font* Sans = TTF_OpenFont("/home/leviathan/Documents/VUT/git/PixelGame/code/tex/fonts/Arimo-Regular.ttf", 14);
+    SDL_Color White = {255, 255, 255};
+
+    int i  = 1.0f / secondsElapsed;
+    char text[20]; 
+    sprintf(text, "FPS: %d", i);
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, text, White); 
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
+    SDL_Rect Message_rect; //create a rect
+    Message_rect.x = 32*38;  //controls the rect's x coordinate 
+    Message_rect.y = 32*0; // controls the rect's y coordinte
+    Message_rect.w = 50; // controls the width of the rect
+    Message_rect.h = 20; // controls the height of the rect
+
+    SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+
+    // Don't forget to free your surface and texture
+    SDL_FreeSurface(surfaceMessage);
+    SDL_DestroyTexture(Message);
+}
+
+
+
 SDL_Texture* LoadTexture(const char* path)
 {
     SDL_Surface* loadedSurface = IMG_Load(path);
@@ -402,17 +429,11 @@ void DrawAll()
         if (KEYS[SDLK_1]) DrawBlocks();     // draw all blocks          (blue)
         if (KEYS[SDLK_2]) DrawEdges();      // draw all edges           (red)
         if (KEYS[SDLK_3]) VisibleEdges();   // draw all visible lines   (green)
-
-        if (number == 3)
-        {
-            Intersections1();
-            number = 0;
-        }
-        number++;
          
         if (player.skin == 2) ChangePlayerPicture(velocity_x, velocity_y);
 
         if (KEYS[SDLK_4]) enemySight();     // draw enemy lines of sight
+        if (KEYS[SDLK_5]) DrawFPS();
 
         // SDL render
         SDL_RenderPresent(renderer);
