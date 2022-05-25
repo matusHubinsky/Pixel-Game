@@ -40,8 +40,8 @@ int i_zostatok;
 float mouseX;
 float mouseY;
 
-_Bool quit = false;
-_Bool KEYS[322]; 
+bool quit = false;
+bool KEYS[322]; 
 
 lvl Cmap;
 

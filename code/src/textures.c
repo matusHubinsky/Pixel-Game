@@ -289,12 +289,19 @@ void enemySight()
     {
         if (enemies[i].health != 0)
         {
-            if (enemies[i].vidim) SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-            else SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
-
+            if (enemies[i].vidim) 
+            {
+                fill_circle(enemies[i].sight.x, enemies[i].sight.y, 6, 0xFF, 0x00, 0x00, 0x88);
+                fill_circle(enemies[i].sight.x, enemies[i].sight.y, 6, 0xFF, 0x00, 0x00, 0xFF);
+                SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+            }    
+            else 
+            {
+                fill_circle(enemies[i].sight.x, enemies[i].sight.y, 6, 0xFF, 0x00, 0xFF, 0x88);
+                fill_circle(enemies[i].sight.x, enemies[i].sight.y, 4, 0xFF, 0x00, 0xFF, 0xFF);
+                SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0xFF, 0xFF);
+            }
             SDL_RenderDrawLine(renderer, player.rec.x + 16, player.rec.y + 16, enemies[i].rec.x + 16, enemies[i].rec.y + 16);
-
-            fill_circle(enemies[i].sight.x, enemies[i].sight.y, 6, 0xFF, 0x00, 0x00, 0xFF);
         }        
     }
 }

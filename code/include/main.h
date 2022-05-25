@@ -70,8 +70,8 @@ extern lvl lvl2;
 extern lvl lvl3;
 extern lvl lvl4;
 
-extern _Bool quit;
-extern _Bool KEYS[322];
+extern bool quit;
+extern bool KEYS[322];
 
 extern SDL_Window* window;
 
@@ -87,7 +87,7 @@ extern SDL_Rect mapRec[1200];
 extern SDL_Rect mapSrc[1200];
 extern SDL_Texture* mapTex[1200];
 
-extern _Bool KEYS[322]; 
+extern bool KEYS[322]; 
 
 typedef struct Creature
 {
@@ -97,14 +97,14 @@ typedef struct Creature
     SDL_Rect src;
 	SDL_Rect sight;
 
-	_Bool vidim;
+	bool vidim;
     float speed;
     int skin;
 
-    _Bool a_up;
-    _Bool a_down;
-    _Bool a_left;
-    _Bool a_right;
+    bool a_up;
+    bool a_down;
+    bool a_left;
+    bool a_right;
 
     int health;
 	
