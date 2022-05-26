@@ -19,6 +19,8 @@ bool InitWorld()
 {
 	bool status = true;
 
+    SDL_Init(SDL_INIT_EVERYTHING);
+
 	if (SDL_Init(SDL_INIT_VIDEO) > 0)
 	{
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -34,7 +36,7 @@ bool InitWorld()
     {
         printf("Image could not be initialize\n");
     }
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
     if (renderer == NULL)
     {
         printf("Rendere could not be initialize. SDL_Error: %s\n", SDL_GetError());
@@ -51,7 +53,17 @@ bool InitWorld()
     SDL_SetWindowIcon(window, icon);
     SDL_SetWindowTitle(window, "Pixel Game");
 
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+
+    TTF_Init();
+    TTF_Font *font = TTF_OpenFont("/home/leviathan/Documents/VUT/git/PixelGame/code/tex/fonts/Arimo-Regular.ttf", 24);
+    if (font == NULL) {
+        fprintf(stderr, "error: font not found\n");
+        exit(EXIT_FAILURE);
+    }
+
     for (int i = 0; i < 322; i++) KEYS[i] = false; 
+    KEYS[SDLK_5] = true;
 
     return status;
 }
@@ -59,7 +71,8 @@ bool InitWorld()
 
 void InitPlayer()
 {
-    player.skin =1;
+    // choose skin
+    player.skin = 1;
 
     if (player.skin == 0)
     {
@@ -83,7 +96,7 @@ void InitPlayer()
         player.a_left = false;
         player.a_right = false;
 
-        player.speed = 3;
+        player.speed = 7;
         player.health = 10;
         player.tex = LoadTexture("tex/map/wood_2.png");
     }
@@ -100,7 +113,7 @@ void InitPlayer()
         player.src.w = 64;
         player.src.h = 64;
 
-        player.speed = 3;
+        player.speed = 7;
         player.health = 10;
         player.tex = LoadTexture("tex/player/front_0.png");
     }
@@ -119,9 +132,9 @@ void InitPlayer()
         enemies[i].src.w = 32;
         enemies[i].src.h = 32;
 
-        enemies[i].speed = 2;
+        enemies[i].speed = 4;
         enemies[i].health = 10;
-        enemies[i].tex = LoadTexture("tex/map/wood_2.png");
+        enemies[i].tex = LoadTexture("tex/player/void.png");
     }
 
     for (int i = 0; i < 30; i++) 

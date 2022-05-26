@@ -31,7 +31,7 @@ void updateMap()
 bool AABB(float x, float y, int number)
 {	
 	int row, collumn;
-	_Bool can = false;
+	bool can = false;
 	// updateMap();
 	// printf("%i %i\n", player.rec.x, player.rec.y);
 	// pridat podmienky na cele telo
@@ -94,7 +94,7 @@ void updatePhysic()
 
 bool enemySee(struct Creature * creature)
 {
-	_Bool valid = false;
+	bool valid = false;
 
 	creature -> rec.x += 16;
 	creature -> rec.y += 16;

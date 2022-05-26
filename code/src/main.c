@@ -14,13 +14,16 @@
 #include "vector.h"
 #include "physic.h"
 
+
+float secondsElapsed = 60.0f;
+
 const int screen_width = 1280;
 const int screen_heigth = 960;
 const int map_width = 40;
 const int map_height = 30;
 
 // long long time, ltime, dtime = 0;
-float velocity_x, velocity_y = 0;
+float velocity_x, velocity_y = 0.0f;
 // int enemy_number = 2;
 
 int step_walk = 32;     
@@ -37,8 +40,8 @@ int i_zostatok;
 float mouseX;
 float mouseY;
 
-_Bool quit = false;
-_Bool KEYS[322]; 
+bool quit = false;
+bool KEYS[322]; 
 
 lvl Cmap;
 
@@ -63,60 +66,75 @@ int main(int argc, char* args[])
 {   
 	if(!InitWorld())
 	{
-		printf("Failed to initialize!\n");
+        fprintf(stderr, "Failed to initialize!\n");
+        exit(1);
 	}
-	else
-	{
-        InitPlayer();
+    InitPlayer();
 
-        SDL_Event e;
+    SDL_Event e;
 
-        int frameTime;            
-        const int FPS = 60;
-        const int frameDelay = 1000 / FPS;
-        long long int frameStart;
+    int frameTime;            
+    const int FPS = 60;
+    const int frameDelay = 1000 / FPS;
+    long long int frameStart;
 
-        WorldMap();
-        RewriteMap(map, world[lvlN]);
-        CreateMap();
+    WorldMap();
+    RewriteMap(map, world[lvlN]);
+    CreateMap();
 
-        while (quit != true)
+    int start = 0;
+    int end = 0;
+
+    int i = 0;
+    float sum = 0.0f;
+
+    while (quit != true)
+    {
+        start = SDL_GetPerformanceCounter();
+        frameStart = SDL_GetTicks();
+        
+        AI();
+        updatePhysic();
+        Intersections1();
+        DrawAll();            
+        
+        while (SDL_PollEvent(&e) != 0)
         {
-            AI();
-            updatePhysic();
-            DrawAll();            
-            
-            while (SDL_PollEvent(&e) != 0)
+     
+            if (e.type == SDL_QUIT) quit = true;
+            else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
             {
-                frameStart = SDL_GetTicks();
-                
-                if (e.type == SDL_QUIT) quit = true;
-                else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
-                {
-                    keyboard(e);
-                }
-                else if (e.type == SDL_MOUSEMOTION)
-                {
-                    mouseX = e.motion.x;
-                    mouseY = e.motion.y;
-                }
-                else
-                {
-                    frameTime = SDL_GetTicks() - frameStart;
+                keyboard(e);
+            }
+            else if (e.type == SDL_MOUSEMOTION)
+            {
+                mouseX = e.motion.x;
+                mouseY = e.motion.y;
+            }
+           else
+            {
+                frameTime = SDL_GetTicks() - frameStart;
 
-                    while (frameDelay > frameTime)
-                    {
-                        AI();
-                        updatePhysic();
-                        DrawAll();
-                        frameTime = SDL_GetTicks() - frameStart;
-                    }   
-                }
-            }   
-        }
-	}
+                while (frameDelay > frameTime)
+                {
+                    AI();
+                    updatePhysic();
+                    Intersections1();
+                    DrawAll();
+                    frameTime = SDL_GetTicks() - frameStart;
+                }   
+            }
+        }   
+        end = SDL_GetPerformanceCounter();
+        sum += (end - start) / (float)SDL_GetPerformanceFrequency();
+        if (i == 8)
+        {
+            secondsElapsed = sum / i;
+            sum = 0.0f; i = 0;
+        } 
+        i++;
+    }
 
 	CloseInit();
-
 	return 0;
 }
