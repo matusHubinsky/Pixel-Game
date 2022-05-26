@@ -15,7 +15,7 @@
 #include "physic.h"
 
 
-float secondsElapsed = 0.0f;
+float secondsElapsed = 60.0f;
 
 const int screen_width = 1280;
 const int screen_heigth = 960;
@@ -66,71 +66,75 @@ int main(int argc, char* args[])
 {   
 	if(!InitWorld())
 	{
-		printf("Failed to initialize!\n");
+        fprintf(stderr, "Failed to initialize!\n");
+        exit(1);
 	}
-	else
-	{
-        InitPlayer();
+    InitPlayer();
 
-        SDL_Event e;
+    SDL_Event e;
 
-        int frameTime;            
-        const int FPS = 60;
-        const int frameDelay = 1000 / FPS;
-        long long int frameStart;
+    int frameTime;            
+    const int FPS = 60;
+    const int frameDelay = 1000 / FPS;
+    long long int frameStart;
 
-        WorldMap();
-        RewriteMap(map, world[lvlN]);
-        CreateMap();
+    WorldMap();
+    RewriteMap(map, world[lvlN]);
+    CreateMap();
 
-        int start = 0;
-        int end = 0;
+    int start = 0;
+    int end = 0;
 
-        while (quit != true)
+    int i = 0;
+    float sum = 0.0f;
+
+    while (quit != true)
+    {
+        start = SDL_GetPerformanceCounter();
+        frameStart = SDL_GetTicks();
+        
+        AI();
+        updatePhysic();
+        Intersections1();
+        DrawAll();            
+        
+        while (SDL_PollEvent(&e) != 0)
         {
-            start = SDL_GetPerformanceCounter();
-            frameStart = SDL_GetTicks();
-            
-            AI();
-            updatePhysic();
-            Intersections1();
-            DrawAll();            
-            
-            while (SDL_PollEvent(&e) != 0)
+     
+            if (e.type == SDL_QUIT) quit = true;
+            else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
             {
-         
-                if (e.type == SDL_QUIT) quit = true;
-                else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
-                {
-                    keyboard(e);
-                }
-                else if (e.type == SDL_MOUSEMOTION)
-                {
-                    mouseX = e.motion.x;
-                    mouseY = e.motion.y;
-                }
-               else
-                {
-                    frameTime = SDL_GetTicks() - frameStart;
+                keyboard(e);
+            }
+            else if (e.type == SDL_MOUSEMOTION)
+            {
+                mouseX = e.motion.x;
+                mouseY = e.motion.y;
+            }
+           else
+            {
+                frameTime = SDL_GetTicks() - frameStart;
 
-                    while (frameDelay > frameTime)
-                    {
-                        AI();
-                        updatePhysic();
-                        Intersections1();
-                        DrawAll();
-                        frameTime = SDL_GetTicks() - frameStart;
-                    }   
-                }
-            }   
-            end = SDL_GetPerformanceCounter();
-            secondsElapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
-            // printf("FPS %f\n", 1.0f / secondsElapsed);
-            // print average FPS
-        }
-	}
+                while (frameDelay > frameTime)
+                {
+                    AI();
+                    updatePhysic();
+                    Intersections1();
+                    DrawAll();
+                    frameTime = SDL_GetTicks() - frameStart;
+                }   
+            }
+        }   
+        end = SDL_GetPerformanceCounter();
+        sum += (end - start) / (float)SDL_GetPerformanceFrequency();
+        if (i == 8)
+        {
+            secondsElapsed = sum / i;
+            sum = 0.0f; i = 0;
+        } 
+        i++;
+    }
 
 	CloseInit();
-
 	return 0;
 }

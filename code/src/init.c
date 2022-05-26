@@ -71,7 +71,8 @@ bool InitWorld()
 
 void InitPlayer()
 {
-    player.skin =1;
+    // choose skin
+    player.skin = 1;
 
     if (player.skin == 0)
     {
