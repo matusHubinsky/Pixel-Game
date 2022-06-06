@@ -28,12 +28,14 @@ void Merge()
             k++;
         }
     }
-    // printf("%i %i\n", visible_map_index, k);
+    
     for (int i = 0; i < k; i++)
     {
         visibleMap[i] = points[i];
     }
     visible_map_index = k;
+
+
 }
 
 
