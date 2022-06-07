@@ -3,7 +3,9 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+
 #include <stdio.h>
+#include <stdbool.h>  
 
 #include "main.h"
 
@@ -21,7 +23,6 @@ void fill_circle(int cx, int cy, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 void fill_triangle(int x1, int y1, int x2, int y2, int x3, int y3, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
 void DrawMap();
-void DrawLight();
 void DrawCreatures();
 
 void DrawEdges();
@@ -32,7 +33,7 @@ void DrawDark();
 void VisibleEdges();
 void VisibleTriangles();
 
-void ChangePlayerPicture(int velocity_x, int velocity_y);
+void ChangePlayerPicture(Creature player);
 
 void enemySight();
 
@@ -40,8 +41,11 @@ void DeathScreen();
 
 void AttackAnimation(bool up, bool down, bool left, bool right);
 
-void DrawAll();
+void DrawFPS(float secondsElapsed);
 
 SDL_Texture* LoadTexture(const char* path);
+
+void DrawAll(float secondsElapsed, bool KEYS[322]);
+
 
 #endif

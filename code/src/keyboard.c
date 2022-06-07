@@ -17,7 +17,7 @@
 struct timeval start, stop;
 double secs = 0;
 
-void keyboard(SDL_Event event)
+void keyboard(SDL_Event event, bool KEYS[322])
 {
     //    gettimeofday(&stop, NULL);
     //    secs = (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);

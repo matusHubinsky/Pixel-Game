@@ -4,13 +4,9 @@
 #include <stdio.h>
 
 void updateMap();
-
 bool AABB(float x, float y, int number);
-
 void updatePhysic();
-
 bool enemySee(struct Creature * creature);
-
 void AI();
 
 #endif

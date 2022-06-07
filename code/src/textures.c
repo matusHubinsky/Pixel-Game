@@ -115,24 +115,6 @@ void DrawMap()
 }
 
 
-void DrawLight()
-{
-    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-    int n = 4;
-    int part = 360/n;
-    double dY, dX;
-    double val = PI / 180;
-    for (int i = 0; i < n; i++)
-    {
-        dX = cos(part*i * val);
-        dY = sin(part*i * val);
-        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0x50);
-        SDL_RenderDrawLine(renderer, mouseX, mouseY, mouseX+(250*dX), mouseY+(250*dY));
-    }
-    // printf("\n");
-}
-
-
 void DrawCreatures()
 {
 	SDL_RenderCopy(renderer, player.tex, &player.src, &player.rec);
@@ -243,7 +225,7 @@ void VisibleTriangles()
 }
 
 
-void ChangePlayerPicture(int velocity_x, int velocity_y)
+void ChangePlayerPicture(Creature player)
 {
     if (player.velocity_x < 0 && left == false)
     {
@@ -382,9 +364,9 @@ void AttackAnimation(bool up, bool down, bool left, bool right)
 }
 
 
-void DrawFPS()
+void DrawFPS(float secondsElapsed)
 {
-        //this opens a font style and sets a size
+    //this opens a font style and sets a size
     TTF_Font* Sans = TTF_OpenFont("/home/leviathan/Documents/VUT/git/PixelGame/code/tex/fonts/Arimo-Regular.ttf", 14);
     SDL_Color White = {255, 255, 255};
 
@@ -395,14 +377,13 @@ void DrawFPS()
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, text, White); 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
 
-    SDL_Rect Message_rect; //create a rect
-    Message_rect.x = 32*38;  //controls the rect's x coordinate 
-    Message_rect.y = 32*0; // controls the rect's y coordinte
-    Message_rect.w = 50; // controls the width of the rect
-    Message_rect.h = 20; // controls the height of the rect
+    SDL_Rect Message_rect;      // create a rect
+    Message_rect.x = 32*38;     // controls the rect's x coordinate 
+    Message_rect.y = 32*0;      // controls the rect's y coordinte
+    Message_rect.w = 50;        // controls the width of the rect
+    Message_rect.h = 20;        // controls the height of the rect
 
     SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
-
     // Don't forget to free your surface and texture
     SDL_FreeSurface(surfaceMessage);
     SDL_DestroyTexture(Message);
@@ -420,7 +401,91 @@ SDL_Texture* LoadTexture(const char* path)
 };
 
 
-void DrawAll()
+void PrepareTriangles()
+{
+
+    /*
+    vertex[0].position.x = (int) player.rec.x + 16;
+    vertex[0].position.y = (int) player.rec.y + 16;
+    vertex[0].color.r = 255;
+    vertex[0].color.g = 255;
+    vertex[0].color.b = 255;
+    vertex[0].color.a = 255;    
+
+    vertex[1].position.x = (int) visibleMap[0].x;
+    vertex[1].position.y = (int) visibleMap[0].y;
+    vertex[1].color.r = 255;
+    vertex[1].color.g = 255;
+    vertex[1].color.b = 255;
+    vertex[1].color.a = 0;
+
+    vertex[2].position.x = (int) visibleMap[1].x;
+    vertex[2].position.y = (int) visibleMap[1].y;
+    vertex[2].color.r = 255;
+    vertex[2].color.g = 255;
+    vertex[2].color.b = 255;
+    vertex[2].color.a = 0;   
+
+    vertex[3].position.x = (int) player.rec.x + 16;
+    vertex[3].position.y = (int) player.rec.y + 16;
+    vertex[3].color.r = 255;
+    vertex[3].color.g = 255;
+    vertex[3].color.b = 255;
+    vertex[3].color.a = 255;    
+
+    vertex[4].position.x = (int) visibleMap[1].x;
+    vertex[4].position.y = (int) visibleMap[1].y;
+    vertex[4].color.r = 255;
+    vertex[4].color.g = 255;
+    vertex[4].color.b = 255;
+    vertex[4].color.a = 0;
+
+    vertex[5].position.x = (int) visibleMap[2].x;
+    vertex[5].position.y = (int) visibleMap[2].y;
+    vertex[5].color.r = 255;
+    vertex[5].color.g = 255;
+    vertex[5].color.b = 255;
+    vertex[5].color.a = 0;  
+
+    vertex_index = 6;
+    */
+
+    int j = 0;
+
+    for (int i = 0; i < visible_map_index; i++)
+    {
+        vertex[j].position.x = (int) player.rec.x + 16;
+        vertex[j].position.y = (int) player.rec.y + 16;
+        vertex[j].color.r = 255;
+        vertex[j].color.g = 255;
+        vertex[j].color.b = 255;
+        vertex[j].color.a = 255;    
+
+        j++;
+
+        vertex[j].position.x = (int) visibleMap[i + 0].x;
+        vertex[j].position.y = (int) visibleMap[i + 0].y;
+        vertex[j].color.r = 255;
+        vertex[j].color.g = 255;
+        vertex[j].color.b = 255;
+        vertex[j].color.a = 0;
+
+        j++;
+
+        vertex[j].position.x = (int) visibleMap[i + 1].x;
+        vertex[j].position.y = (int) visibleMap[i + 1].y;
+        vertex[j].color.r = 255;
+        vertex[j].color.g = 255;
+        vertex[j].color.b = 255;
+        vertex[j].color.a = 0;   
+        
+        j++;         
+    }
+    vertex_index = j;
+}
+
+
+void DrawAll(float secondsElapsed, bool KEYS[322])
 {
     if (player.health != 0)
     {
@@ -433,14 +498,17 @@ void DrawAll()
         DrawMap();                          // map 
         DrawCreatures();                    // creatures
 
+        PrepareTriangles();
+        SDL_RenderGeometry(renderer, NULL, vertex, vertex_index, NULL, 0);
+
         if (KEYS[SDLK_1]) DrawBlocks();     // draw all blocks          (blue)
         if (KEYS[SDLK_2]) DrawEdges();      // draw all edges           (red)
         if (KEYS[SDLK_3]) VisibleEdges();   // draw all visible lines   (green)
          
-        if (player.skin == 2) ChangePlayerPicture(velocity_x, velocity_y);
+        if (player.skin == 2) ChangePlayerPicture(player);
 
         if (KEYS[SDLK_4]) enemySight();     // draw enemy lines of sight
-        if (KEYS[SDLK_5]) DrawFPS();
+        if (KEYS[SDLK_5]) DrawFPS(secondsElapsed);
 
         // SDL render
         SDL_RenderPresent(renderer);

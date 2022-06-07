@@ -19,6 +19,9 @@
 extern float secondsElapsed;
 
 // constans
+extern const int block;
+extern const int step_walk;
+extern const int step_teleport;
 extern const int screen_width;
 extern const int screen_heigth;
 extern const int map_width;
@@ -41,24 +44,7 @@ extern int poly_map_index;
 extern int edge_map_index;
 extern int visible_map_index; 
 
-// extern int enemy_number;
-
-extern int step_walk;
-extern int step_teleport;
-extern int n;
 extern int lvlN;
-extern int block;
-
-extern int x_posun;
-extern int y_posun; 
-extern int x_zaporne;
-extern int x_kladne;
-extern int y_zaporne;
-extern int y_kladne;
-extern int i_zostatok;
-
-extern float mouseX;
-extern float mouseY;
 
 typedef int lvl[30][40];			
 extern lvl world[4];	
@@ -74,20 +60,14 @@ extern bool quit;
 extern bool KEYS[322];
 
 extern SDL_Window* window;
-
 extern SDL_Renderer* renderer;
-
 extern SDL_Texture* texture;
-extern SDL_Texture* LoadTexture(const char* path);
 
-extern SDL_Rect rec;
-extern SDL_Rect src;
+extern SDL_Texture* LoadTexture(const char* path);
 
 extern SDL_Rect mapRec[1200];
 extern SDL_Rect mapSrc[1200];
 extern SDL_Texture* mapTex[1200];
-
-extern bool KEYS[322]; 
 
 typedef struct Creature
 {
@@ -101,16 +81,11 @@ typedef struct Creature
     float speed;
     int skin;
 
-    bool a_up;
-    bool a_down;
-    bool a_left;
-    bool a_right;
+    bool a_up;   bool a_down;
+    bool a_left; bool a_right;
 
     int health;
-	
-	int velocity_y;
-	int velocity_x;    
-
+	int velocity_y; int velocity_x;    
 } Creature;
 
 typedef struct room
@@ -138,14 +113,14 @@ typedef struct poly_edge
 	bool exist;	
 } Pedge;
 
-// extern Edge poly_map[1200];  robim ju v light.c
+extern struct Creature player;
+extern struct Creature enemies [enemy_number];
+
 extern Edge edgeMap[1200]; 
 extern Vedge visibleMap[1200];
 extern Pedge poly_map[40*40 + 30]; 
 
-extern Creature enemies [enemy_number];
-
-extern struct Creature player;
-// extern struct Creature enemy;
+extern SDL_Vertex vertex[1200];
+extern int vertex_index;
 
 #endif
