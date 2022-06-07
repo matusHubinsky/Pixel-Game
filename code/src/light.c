@@ -11,8 +11,10 @@
 
 void Merge()
 {
-    Vedge points[visible_map_index];
     int k = 0;
+    Vedge points[visible_map_index];
+
+    // This shouldn't work
 
     for (int i = 0; i < visible_map_index - 1; i++)
     {
@@ -33,8 +35,6 @@ void Merge()
         visibleMap[i] = points[i];
     }
     visible_map_index = k;
-
-
 }
 
 
@@ -92,17 +92,17 @@ void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch)
                 {
                     if (poly_map[n].edge_exist[WEST])
                     {
-                        edgeMap[poly_map[n].edge_id[WEST]].end_y += block;
+                        edgeMap[poly_map[n].edge_id[WEST]].end_y += BLOCK;
                         poly_map[i].edge_id[WEST] = poly_map[n].edge_id[WEST];
                         poly_map[i].edge_exist[WEST] = true;
                     }
                     else
                     {
-                        edgeMap[edge_map_index].start_x = (sx + x) * block; 
-                        edgeMap[edge_map_index].start_y = (sy + y) * block;
+                        edgeMap[edge_map_index].start_x = (sx + x) * BLOCK; 
+                        edgeMap[edge_map_index].start_y = (sy + y) * BLOCK;
 
                         edgeMap[edge_map_index].end_x = edgeMap[edge_map_index].start_x; 
-                        edgeMap[edge_map_index].end_y = edgeMap[edge_map_index].start_y + block;
+                        edgeMap[edge_map_index].end_y = edgeMap[edge_map_index].start_y + BLOCK;
 
                         int edge_id = edge_map_index;
                         edge_map_index++;
@@ -116,16 +116,16 @@ void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch)
                 {
                     if (poly_map[n].edge_exist[EAST])
                     {
-                        edgeMap[poly_map[n].edge_id[EAST]].end_y += block;
+                        edgeMap[poly_map[n].edge_id[EAST]].end_y += BLOCK;
                         poly_map[i].edge_id[EAST] = poly_map[n].edge_id[EAST];
                         poly_map[i].edge_exist[EAST] = true;
                     }
                     else
                     {
-                        edgeMap[edge_map_index].start_x = (sx + x + 1) * block; 
-                        edgeMap[edge_map_index].start_y = (sy + y) * block;
+                        edgeMap[edge_map_index].start_x = (sx + x + 1) * BLOCK; 
+                        edgeMap[edge_map_index].start_y = (sy + y) * BLOCK;
                         edgeMap[edge_map_index].end_x = edgeMap[edge_map_index].start_x; 
-                        edgeMap[edge_map_index].end_y = edgeMap[edge_map_index].start_y + block;
+                        edgeMap[edge_map_index].end_y = edgeMap[edge_map_index].start_y + BLOCK;
 
                         int edge_id = edge_map_index;
                         edge_map_index++;
@@ -138,15 +138,15 @@ void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch)
                 {
                     if (poly_map[w].edge_exist[NORTH])
                     {
-                        edgeMap[poly_map[w].edge_id[NORTH]].end_x += block;
+                        edgeMap[poly_map[w].edge_id[NORTH]].end_x += BLOCK;
                         poly_map[i].edge_id[NORTH] = poly_map[w].edge_id[NORTH];
                         poly_map[i].edge_exist[NORTH] = true;
                     }
                     else
                     {
-                        edgeMap[edge_map_index].start_x = (sx + x) * block; 
-                        edgeMap[edge_map_index].start_y = (sy + y) * block;
-                        edgeMap[edge_map_index].end_x = edgeMap[edge_map_index].start_x + block; 
+                        edgeMap[edge_map_index].start_x = (sx + x) * BLOCK; 
+                        edgeMap[edge_map_index].start_y = (sy + y) * BLOCK;
+                        edgeMap[edge_map_index].end_x = edgeMap[edge_map_index].start_x + BLOCK; 
                         edgeMap[edge_map_index].end_y = edgeMap[edge_map_index].start_y;
                         
                         int edge_id = edge_map_index;
@@ -161,15 +161,15 @@ void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch)
 
                     if (poly_map[w].edge_exist[SOUTH])
                     {
-                        edgeMap[poly_map[w].edge_id[SOUTH]].end_x += block;
+                        edgeMap[poly_map[w].edge_id[SOUTH]].end_x += BLOCK;
                         poly_map[i].edge_id[SOUTH] = poly_map[w].edge_id[SOUTH];
                         poly_map[i].edge_exist[SOUTH] = true;
                     }
                     else
                     {
-                        edgeMap[edge_map_index].start_x = (sx + x) * block; 
-                        edgeMap[edge_map_index].start_y = (sy + y + 1) * block;
-                        edgeMap[edge_map_index].end_x = edgeMap[edge_map_index].start_x + block; 
+                        edgeMap[edge_map_index].start_x = (sx + x) * BLOCK; 
+                        edgeMap[edge_map_index].start_y = (sy + y + 1) * BLOCK;
+                        edgeMap[edge_map_index].end_x = edgeMap[edge_map_index].start_x + BLOCK; 
                         edgeMap[edge_map_index].end_y = edgeMap[edge_map_index].start_y;
 
                         int edge_id = edge_map_index;
@@ -269,6 +269,5 @@ void Intersections1()
             }
         }
     }
-
     Merge();
 }

@@ -149,7 +149,7 @@ void DrawBlocks()
         {
             if (poly_map[y*40 + x].exist) 
             {
-                fill_rectangle(x * block, y * block, block, 0xFF, 0x00, 0x00, 0x55);
+                fill_rectangle(x * BLOCK, y * BLOCK, BLOCK, 0xFF, 0x00, 0x00, 0x55);
             }
         }
     }
@@ -158,13 +158,13 @@ void DrawBlocks()
 void DrawDark()
 {
     SDL_Rect rect;
-    rect.x = 0;
-    rect.y = 0;
-    rect.w = 1280;
-    rect.h = 960;
+    rect.x = 32;
+    rect.y = 32;
+    rect.w = 1280 - 64;
+    rect.h = 960 - 64;
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xA0);
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x55);
     SDL_RenderFillRect(renderer, &rect);
 }
 
@@ -419,16 +419,6 @@ void PrepareTriangles()
 {
     int j = 0;
 
-    /*
-    for (int i = 0; i < visible_map_index * 3; i++)
-    {
-        vertex[i].color.r = 255;
-        vertex[i].color.g = 255;
-        vertex[i].color.b = 255;
-        vertex[i].color.a = 150;   
-    }
-    */
-
     for (int i = 0; i < visible_map_index; i++)
     {
         vertex[j].position.x = (int) player.rec.x + 16;
@@ -436,7 +426,7 @@ void PrepareTriangles()
         vertex[j].color.r = 255;
         vertex[j].color.g = 255;
         vertex[j].color.b = 255;
-        vertex[j].color.a = 100;
+        vertex[j].color.a = 30;
         j++;
 
         vertex[j].position.x = (int) visibleMap[i + 0].x;
@@ -472,7 +462,7 @@ void DrawAll(float secondsElapsed, bool KEYS[322])
         DrawMap();                          // map 
         DrawCreatures();                    // creatures
 
-        // if (KEYS[SDLK_1]) DrawBlocks();     // draw all blocks          (blue)
+        if (KEYS[SDLK_1]) DrawBlocks();     // draw all blocks          (blue)
         if (KEYS[SDLK_2]) DrawEdges();      // draw all edges           (red)
         if (KEYS[SDLK_3]) VisibleEdges();   // draw all visible lines   (green)
          
@@ -496,14 +486,28 @@ void DrawAll(float secondsElapsed, bool KEYS[322])
 
 void getRenderInfo()
 {
-    /*
-    SDL_RendererInfo * info = NULL;
-    if (SDL_GetRenderDriverInfo(1, info) == 0)
+    SDL_RendererInfo info = {0};
+    if (SDL_GetRenderDriverInfo(0, &info) == 0)
     {
+        printf("-------------------------------------------------------\n");
         printf("Render Driver info: \n");
-        printf("Name: %s\n", info -> name);
+        printf("name: %s\n", info.name);
+        printf("flags: %d\n", info.flags);
+        printf("num_texture_formats: %d\n", info.num_texture_formats);
+
+        for (int i = 0; i < info.num_texture_formats; i++)
+        {
+            printf("texture_formats[%i]: %d\n", i, info.texture_formats[i]);    
+        }
+
+        printf("max_texture_width: %d\n", info.max_texture_width);
+        printf("max_texture_height: %d\n", info.max_texture_height);            
     }
-    */
+    else
+    {
+        printf("SDL_Init failed: %s\n", SDL_GetError());
+    }
 
     printf("Render Driver number: %d\n", SDL_GetNumRenderDrivers());
+    printf("-------------------------------------------------------\n");
 }
