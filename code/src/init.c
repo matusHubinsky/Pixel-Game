@@ -7,8 +7,6 @@
 #include "world.h"
 #include "vector.h"
 #include "physic.h"
-#include "const.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -119,7 +117,7 @@ void InitPlayer()
         player.tex = LoadTexture("tex/player/front_0.png");
     }
 
-    for (int i = 0; i < enemy_number; i++)
+    for (int i = 0; i < ENEMY_NUMBER; i++)
     {   
         enemies[i].skin = 1; 
 

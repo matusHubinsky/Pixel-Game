@@ -11,22 +11,6 @@
 
 #include "const.h"
 
-extern float secondsElapsed;
-
-#define MAP_WIDTH 40
-#define MAP_HEIGTH 30
-
-// player speed
-extern float velocity_x;
-extern float velocity_y;
-
-// time 
-
-/*
-extern long long time;
-extern long long ltime;
-extern long long dtime;
-*/
 
 // indexs
 extern int poly_map_index;
@@ -110,7 +94,7 @@ typedef struct vertexs
 } Vertexs;
 
 extern struct Creature player;
-extern struct Creature enemies [enemy_number];
+extern struct Creature enemies [ENEMY_NUMBER];
 
 extern Edge edgeMap[MAP_WIDTH * MAP_HEIGTH]; 
 extern Vedge visibleMap[MAP_WIDTH * MAP_HEIGTH];

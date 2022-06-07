@@ -121,7 +121,7 @@ void DrawCreatures()
 	SDL_RenderCopy(renderer, player.tex, &player.src, &player.rec);
     AttackAnimation(player.a_up, player.a_down, player.a_left, player.a_right);
 
-    for (int i = 0; i < enemy_number; i++)
+    for (int i = 0; i < ENEMY_NUMBER; i++)
     {
         SDL_RenderCopy(renderer, enemies[i].tex, &enemies[i].src, &enemies[i].rec); 
     }
@@ -172,7 +172,7 @@ void DrawDark()
 void VisibleEdges()
 {
     SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
-    // printf("%i\n", visible_map_index);
+    // fprintf(file_ptr, "%i\n", visible_map_index);
 
     if (player.skin == 1)
     {
@@ -198,7 +198,7 @@ void VisibleEdges()
 
 void VisibleTriangles()
 {
-    // printf("%i\n", visible_map_index);
+    // fprintf(file_ptr, "%i\n", visible_map_index);
     if (player.skin == 1)
     {
         for (int i = 0; i < visible_map_index -1 ; i++)
@@ -268,7 +268,7 @@ void ChangePlayerPicture(Creature player)
 
 void enemySight()
 {
-    for (int i = 0; i < enemy_number; i++)
+    for (int i = 0; i < ENEMY_NUMBER; i++)
     {
         if (enemies[i].health != 0)
         {
@@ -477,6 +477,7 @@ void DrawAll(float secondsElapsed, bool KEYS[322])
             DrawDark();
             SDL_RenderGeometry(renderer, triangle_texture, vertex, vertex_index, NULL, 0);
         }
+        if (KEYS[SDLK_6]) getRenderInfo();
 
         // SDL render
         SDL_RenderPresent(renderer);
@@ -486,28 +487,37 @@ void DrawAll(float secondsElapsed, bool KEYS[322])
 
 void getRenderInfo()
 {
+    FILE * file_ptr;
+    file_ptr = fopen("/home/leviathan/Documents/VUT/git/PixelGame/txt/info.txt", "w");
+    
+    if (file_ptr == NULL)
+    {
+        fprintf(stderr, "File can't be created\n");
+        exit(1);
+    }
+
     SDL_RendererInfo info = {0};
     if (SDL_GetRenderDriverInfo(0, &info) == 0)
     {
-        printf("-------------------------------------------------------\n");
-        printf("Render Driver info: \n");
-        printf("name: %s\n", info.name);
-        printf("flags: %d\n", info.flags);
-        printf("num_texture_formats: %d\n", info.num_texture_formats);
+        fprintf(file_ptr, "-------------------------------------------------------\n");
+        fprintf(file_ptr, "Render Driver info: \n");
+        fprintf(file_ptr, "name: %s\n", info.name);
+        fprintf(file_ptr, "flags: %d\n", info.flags);
+        fprintf(file_ptr, "num_texture_formats: %d\n", info.num_texture_formats);
 
         for (int i = 0; i < info.num_texture_formats; i++)
         {
-            printf("texture_formats[%i]: %d\n", i, info.texture_formats[i]);    
+            fprintf(file_ptr, "texture_formats[%i]: %d\n", i, info.texture_formats[i]);    
         }
 
-        printf("max_texture_width: %d\n", info.max_texture_width);
-        printf("max_texture_height: %d\n", info.max_texture_height);            
+        fprintf(file_ptr, "max_texture_width: %d\n", info.max_texture_width);
+        fprintf(file_ptr, "max_texture_height: %d\n", info.max_texture_height);            
     }
     else
     {
-        printf("SDL_Init failed: %s\n", SDL_GetError());
+        fprintf(file_ptr, "SDL_Init failed: %s\n", SDL_GetError());
     }
 
-    printf("Render Driver number: %d\n", SDL_GetNumRenderDrivers());
-    printf("-------------------------------------------------------\n");
+    fprintf(file_ptr, "Render Driver number: %d\n", SDL_GetNumRenderDrivers());
+    fprintf(file_ptr, "-------------------------------------------------------\n");
 }

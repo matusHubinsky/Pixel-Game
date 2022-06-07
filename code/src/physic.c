@@ -13,7 +13,7 @@ void updateMap()
 {
 	int row, collumn;
 	
-	for (int i = 0; i < enemy_number; i++)
+	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
 		row = enemies[i].rec.y / 32;
 		collumn = enemies[i].rec.x / 32;
@@ -42,14 +42,14 @@ bool AABB(float x, float y, int number)
 	
 	if (map[row][collumn] != 3)
 	{
-		for (int i = 0; i < enemy_number; i++)
+		for (int i = 0; i < ENEMY_NUMBER; i++)
 		{
 			if (number != i)	// cheking enemies
 			{
 				if ((x >= enemies[i].rec.x) && (x <= enemies[i].rec.x + 32) && (y >= enemies[i].rec.y) && (y <= enemies[i].rec.y + 32)) return can;
 			}
 	
-			if (number != enemy_number)	  // checking player
+			if (number != ENEMY_NUMBER)	  // checking player
 			{
 				if ((x >= player.rec.x) && (x <= player.rec.x + 32) && (y >= player.rec.y) && (y <= player.rec.y + 32)) return can;			
 			}
@@ -70,7 +70,7 @@ void updatePhysic()
 	if (player.velocity_x > 0) new_x += 32;
 	if (player.velocity_y > 0) new_y += 32;
 
-	if (AABB(new_x, new_y, enemy_number))
+	if (AABB(new_x, new_y, ENEMY_NUMBER))
 	{
 		if (player.velocity_x != 0 && player.velocity_y != 0)
 		{
@@ -175,7 +175,7 @@ bool enemySee(struct Creature * creature)
 
 void AI()
 {
-    for (int i = 0; i < enemy_number; i++)
+    for (int i = 0; i < ENEMY_NUMBER; i++)
     {
         if (enemies[i].health != 0)
         {

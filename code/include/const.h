@@ -9,7 +9,7 @@
 #define EAST 2
 #define WEST 3
 
-#define enemy_number 4
+#define ENEMY_NUMBER 4
 
 #define BLOCK 32
 #define STEP_WALk 32

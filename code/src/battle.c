@@ -12,7 +12,7 @@ void PlayerAttack(struct Creature * creature, bool up, bool down, bool left, boo
 	int distance = 64; 
 	int k;
 
-	for (int i = 0; i < enemy_number; i++)
+	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
 
 		if (up == true && (((enemies[i].rec.y - creature -> rec.y) < 0) && (enemies[i].rec.y - creature -> rec.y) > -distance))

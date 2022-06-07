@@ -28,7 +28,7 @@ SDL_Renderer* renderer = NULL;
 SDL_Texture* texture = NULL;
 
 struct Creature player;
-struct Creature enemies [enemy_number];
+struct Creature enemies [ENEMY_NUMBER];
 
 Edge edgeMap[MAP_WIDTH * MAP_HEIGTH]; 
 Vedge visibleMap[MAP_WIDTH * MAP_HEIGTH];
@@ -56,13 +56,8 @@ int main(int argc, char* args[])
     RewriteMap(map, world[lvlN]);
     CreateMap();
 
-    int start = 0;
-    int end = 0;
-
-    int i = 0;
+    int start = 0; int end = 0; int i = 0;
     float sum = 0.0f;
-
-    getRenderInfo();
 
     while (quit != true)
     {
