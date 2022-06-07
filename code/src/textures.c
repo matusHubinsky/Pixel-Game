@@ -9,6 +9,7 @@
 _Bool up, down, left, right = false;
 
 int number = 2;
+SDL_Texture* triangle_texture;
 
 
 int min (int a, int b, int c)
@@ -401,56 +402,32 @@ SDL_Texture* LoadTexture(const char* path)
 };
 
 
+void TriagnleTexture(SDL_Texture* triangle_texture)
+{
+    /*
+    SDL_Rect Rec;
+    SDL_Rect Src;
+    Rec.w = 512;
+    Rec.h = 512;
+    Src.w = 512;
+    Src.h = 512;
+    */
+    triangle_texture = LoadTexture("tex/player/light.png");
+}
+
 void PrepareTriangles()
 {
+    int j = 0;
 
     /*
-    vertex[0].position.x = (int) player.rec.x + 16;
-    vertex[0].position.y = (int) player.rec.y + 16;
-    vertex[0].color.r = 255;
-    vertex[0].color.g = 255;
-    vertex[0].color.b = 255;
-    vertex[0].color.a = 255;    
-
-    vertex[1].position.x = (int) visibleMap[0].x;
-    vertex[1].position.y = (int) visibleMap[0].y;
-    vertex[1].color.r = 255;
-    vertex[1].color.g = 255;
-    vertex[1].color.b = 255;
-    vertex[1].color.a = 0;
-
-    vertex[2].position.x = (int) visibleMap[1].x;
-    vertex[2].position.y = (int) visibleMap[1].y;
-    vertex[2].color.r = 255;
-    vertex[2].color.g = 255;
-    vertex[2].color.b = 255;
-    vertex[2].color.a = 0;   
-
-    vertex[3].position.x = (int) player.rec.x + 16;
-    vertex[3].position.y = (int) player.rec.y + 16;
-    vertex[3].color.r = 255;
-    vertex[3].color.g = 255;
-    vertex[3].color.b = 255;
-    vertex[3].color.a = 255;    
-
-    vertex[4].position.x = (int) visibleMap[1].x;
-    vertex[4].position.y = (int) visibleMap[1].y;
-    vertex[4].color.r = 255;
-    vertex[4].color.g = 255;
-    vertex[4].color.b = 255;
-    vertex[4].color.a = 0;
-
-    vertex[5].position.x = (int) visibleMap[2].x;
-    vertex[5].position.y = (int) visibleMap[2].y;
-    vertex[5].color.r = 255;
-    vertex[5].color.g = 255;
-    vertex[5].color.b = 255;
-    vertex[5].color.a = 0;  
-
-    vertex_index = 6;
+    for (int i = 0; i < visible_map_index * 3; i++)
+    {
+        vertex[i].color.r = 255;
+        vertex[i].color.g = 255;
+        vertex[i].color.b = 255;
+        vertex[i].color.a = 150;   
+    }
     */
-
-    int j = 0;
 
     for (int i = 0; i < visible_map_index; i++)
     {
@@ -459,8 +436,7 @@ void PrepareTriangles()
         vertex[j].color.r = 255;
         vertex[j].color.g = 255;
         vertex[j].color.b = 255;
-        vertex[j].color.a = 255;    
-
+        vertex[j].color.a = 100;
         j++;
 
         vertex[j].position.x = (int) visibleMap[i + 0].x;
@@ -468,17 +444,15 @@ void PrepareTriangles()
         vertex[j].color.r = 255;
         vertex[j].color.g = 255;
         vertex[j].color.b = 255;
-        vertex[j].color.a = 0;
-
+        vertex[j].color.a = 20;
         j++;
 
-        vertex[j].position.x = (int) visibleMap[i + 1].x;
-        vertex[j].position.y = (int) visibleMap[i + 1].y;
+        vertex[j].position.x = (int) visibleMap[(i + 1) % visible_map_index].x;
+        vertex[j].position.y = (int) visibleMap[(i + 1) % visible_map_index].y;   
         vertex[j].color.r = 255;
         vertex[j].color.g = 255;
         vertex[j].color.b = 255;
-        vertex[j].color.a = 0;   
-        
+        vertex[j].color.a = 20;
         j++;         
     }
     vertex_index = j;
@@ -498,10 +472,7 @@ void DrawAll(float secondsElapsed, bool KEYS[322])
         DrawMap();                          // map 
         DrawCreatures();                    // creatures
 
-        PrepareTriangles();
-        SDL_RenderGeometry(renderer, NULL, vertex, vertex_index, NULL, 0);
-
-        if (KEYS[SDLK_1]) DrawBlocks();     // draw all blocks          (blue)
+        // if (KEYS[SDLK_1]) DrawBlocks();     // draw all blocks          (blue)
         if (KEYS[SDLK_2]) DrawEdges();      // draw all edges           (red)
         if (KEYS[SDLK_3]) VisibleEdges();   // draw all visible lines   (green)
          
@@ -509,8 +480,30 @@ void DrawAll(float secondsElapsed, bool KEYS[322])
 
         if (KEYS[SDLK_4]) enemySight();     // draw enemy lines of sight
         if (KEYS[SDLK_5]) DrawFPS(secondsElapsed);
+        if (KEYS[SDLK_6])
+        {
+            TriagnleTexture(triangle_texture);
+            PrepareTriangles();
+            DrawDark();
+            SDL_RenderGeometry(renderer, triangle_texture, vertex, vertex_index, NULL, 0);
+        }
 
         // SDL render
         SDL_RenderPresent(renderer);
     }
+}
+
+
+void getRenderInfo()
+{
+    /*
+    SDL_RendererInfo * info = NULL;
+    if (SDL_GetRenderDriverInfo(1, info) == 0)
+    {
+        printf("Render Driver info: \n");
+        printf("Name: %s\n", info -> name);
+    }
+    */
+
+    printf("Render Driver number: %d\n", SDL_GetNumRenderDrivers());
 }

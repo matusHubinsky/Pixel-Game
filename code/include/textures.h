@@ -41,11 +41,14 @@ void DeathScreen();
 
 void AttackAnimation(bool up, bool down, bool left, bool right);
 
+void PrepareTriangles();
+
 void DrawFPS(float secondsElapsed);
 
 SDL_Texture* LoadTexture(const char* path);
 
 void DrawAll(float secondsElapsed, bool KEYS[322]);
 
+void getRenderInfo();
 
 #endif

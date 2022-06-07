@@ -16,13 +16,12 @@ void Merge()
 
     for (int i = 0; i < visible_map_index - 1; i++)
     {
-        if ((fabs(visibleMap[i].x - visibleMap[i + 1].x) > 10.0f)) // && ((fabs(visibleMap[i].x - points[k].x) >= dis)))
+        if ((fabs(visibleMap[i].x - visibleMap[i + 1].x)) > 0.01f) 
         {
             points[k] = visibleMap[i];
             k++;
         }
-
-        else if ((fabs(visibleMap[i].y - visibleMap[i + 1].y) > 10.0f)) // && ((fabs(visibleMap[i].y - points[k].y) >= dis)))
+        else if ((fabs(visibleMap[i].y - visibleMap[i + 1].y)) > 0.01f)
         {
             points[k] = visibleMap[i];
             k++;
@@ -270,5 +269,6 @@ void Intersections1()
             }
         }
     }
+
     Merge();
 }

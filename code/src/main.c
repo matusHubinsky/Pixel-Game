@@ -72,6 +72,8 @@ int main(int argc, char* args[])
     int i = 0;
     float sum = 0.0f;
 
+    getRenderInfo();
+
     while (quit != true)
     {
         start = SDL_GetPerformanceCounter();
