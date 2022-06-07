@@ -14,7 +14,7 @@
 #include "textures.h"
 
 
-bool InitWorld()
+bool InitWorld(bool KEYS[322])
 {
 	bool status = true;
 

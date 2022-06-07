@@ -11,7 +11,6 @@
 
 #include "const.h"
 
-
 // indexs
 extern int poly_map_index;
 extern int edge_map_index;
@@ -23,14 +22,8 @@ typedef int lvl[30][40];
 extern lvl world[4];	
 extern lvl map; 
 extern lvl Cmap;
- 
-extern lvl lvl1;
-extern lvl lvl2;
-extern lvl lvl3;
-extern lvl lvl4;
 
 extern bool quit;
-extern bool KEYS[322];
 
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
@@ -88,9 +81,15 @@ typedef struct poly_edge
 
 typedef struct vertexs
 {
+	// structures
 	Edge sedgeMap[MAP_WIDTH * MAP_HEIGTH]; 
 	Vedge visibleMap[MAP_WIDTH * MAP_HEIGTH];
 	Pedge poly_map[MAP_WIDTH*MAP_WIDTH  + MAP_HEIGTH]; 
+
+	//indexs
+	int poly_map_index;
+	int edge_map_index;
+	int visible_map_index; 
 } Vertexs;
 
 extern struct Creature player;

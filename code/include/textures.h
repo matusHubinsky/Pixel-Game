@@ -29,26 +29,19 @@ void DrawEdges();
 void DrawBlocks();
 
 void DrawDark();
-
 void VisibleEdges();
 void VisibleTriangles();
 
 void ChangePlayerPicture(Creature player);
-
 void enemySight();
-
 void DeathScreen();
-
 void AttackAnimation(bool up, bool down, bool left, bool right);
-
 void PrepareTriangles();
-
 void DrawFPS(float secondsElapsed);
 
 SDL_Texture* LoadTexture(const char* path);
 
 void DrawAll(float secondsElapsed, bool KEYS[322]);
-
 void getRenderInfo();
 
 #endif

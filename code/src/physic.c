@@ -1,4 +1,4 @@
-#include "main.h"
+
 #include "physic.h"
 #include "textures.h"
 #include "light.h"

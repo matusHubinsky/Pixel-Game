@@ -1,5 +1,4 @@
 #include "map.h"
-#include "main.h"
 #include "textures.h"
 #include "light.h"
 #include "world.h"
@@ -10,6 +9,7 @@
 
 
 int lvlN = 0;
+
 lvl map;
 
 long int random(void);

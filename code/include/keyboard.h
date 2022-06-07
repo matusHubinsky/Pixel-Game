@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdbool.h>  
 
+#include "main.h"
+
 void keyboard(SDL_Event event, bool KEYS[322]);
 
 #endif

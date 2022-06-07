@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#include "main.h"
+
 void updateMap();
 bool AABB(float x, float y, int number);
 void updatePhysic();

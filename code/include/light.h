@@ -8,6 +8,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "main.h"
+
 
 void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch);
 

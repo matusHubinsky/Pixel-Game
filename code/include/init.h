@@ -8,7 +8,7 @@
 
 #include "main.h"
 
-bool InitWorld();
+bool InitWorld(bool KEYS[322]);
 void InitPlayer();
 void InitReborn();
 void ToggleFullscreen(SDL_Window* Window);

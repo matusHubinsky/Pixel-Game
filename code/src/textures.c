@@ -1,5 +1,4 @@
 #include "textures.h"
-#include "main.h"
 #include "light.h"
 
 #include <stdio.h>
@@ -477,7 +476,11 @@ void DrawAll(float secondsElapsed, bool KEYS[322])
             DrawDark();
             SDL_RenderGeometry(renderer, triangle_texture, vertex, vertex_index, NULL, 0);
         }
-        if (KEYS[SDLK_6]) getRenderInfo();
+        if (KEYS[SDLK_7]) 
+        {
+            getRenderInfo();
+            KEYS[SDLK_7] = false;
+        }
 
         // SDL render
         SDL_RenderPresent(renderer);
@@ -517,7 +520,9 @@ void getRenderInfo()
     {
         fprintf(file_ptr, "SDL_Init failed: %s\n", SDL_GetError());
     }
-
     fprintf(file_ptr, "Render Driver number: %d\n", SDL_GetNumRenderDrivers());
     fprintf(file_ptr, "-------------------------------------------------------\n");
+
+    // message to user
+    fprintf(stdout, "Driver info sent!\n");
 }

@@ -15,11 +15,10 @@
 #include "physic.h"
 
     
-
 int poly_map_index, edge_map_index, visible_map_index = 0; 
 
 bool quit = false;
-bool KEYS[322]; 
+
 
 lvl Cmap;
 
@@ -37,8 +36,10 @@ SDL_Vertex vertex[MAP_WIDTH * MAP_HEIGTH];
 int vertex_index = 0;
 
 int main(int argc, char* args[])
-{   
-	if(!InitWorld())
+{
+    bool KEYS[322];
+   
+	if(!InitWorld(KEYS))
 	{
         fprintf(stderr, "Failed to initialize!\n");
         exit(1);
