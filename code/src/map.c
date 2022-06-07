@@ -3,6 +3,7 @@
 #include "textures.h"
 #include "light.h"
 #include "world.h"
+#include "const.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -55,15 +56,15 @@ void CreateMap() // nacitanie textur
             else if (map[i][j] == 3) texture = LoadTexture("tex/map/brick.png");
             else if (map[i][j] == 4) texture = LoadTexture("tex/map/dirt.png");  
             
-            Rec.x = j*block;
-            Rec.y = i*block;
-            Rec.w = block;
-            Rec.h = block;
+            Rec.x = j*BLOCK;
+            Rec.y = i*BLOCK;
+            Rec.w = BLOCK;
+            Rec.h = BLOCK;
 
             Src.x = 0;
             Src.y = 0;
-            Src.w = block;
-            Src.h = block;
+            Src.w = BLOCK;
+            Src.h = BLOCK;
 
             mapRec[k] = Rec;
             mapSrc[k] = Src;

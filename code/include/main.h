@@ -9,23 +9,12 @@
 #include <SDL2/SDL_thread.h>
 #include <SDL2/SDL_ttf.h>
 
-#define NORTH 0
-#define SOUTH 1
-#define EAST 2
-#define WEST 3
-
-#define enemy_number 4
+#include "const.h"
 
 extern float secondsElapsed;
 
-// constans
-extern const int block;
-extern const int step_walk;
-extern const int step_teleport;
-extern const int screen_width;
-extern const int screen_heigth;
-extern const int map_width;
-extern const int map_heigth;
+#define MAP_WIDTH 40
+#define MAP_HEIGTH 30
 
 // player speed
 extern float velocity_x;
@@ -113,14 +102,20 @@ typedef struct poly_edge
 	bool exist;	
 } Pedge;
 
+typedef struct vertexs
+{
+	Edge sedgeMap[MAP_WIDTH * MAP_HEIGTH]; 
+	Vedge visibleMap[MAP_WIDTH * MAP_HEIGTH];
+	Pedge poly_map[MAP_WIDTH*MAP_WIDTH  + MAP_HEIGTH]; 
+} Vertexs;
+
 extern struct Creature player;
 extern struct Creature enemies [enemy_number];
 
-extern Edge edgeMap[1200]; 
-extern Vedge visibleMap[1200];
-extern Pedge poly_map[40*40 + 30]; 
-
-extern SDL_Vertex vertex[1200];
+extern Edge edgeMap[MAP_WIDTH * MAP_HEIGTH]; 
+extern Vedge visibleMap[MAP_WIDTH * MAP_HEIGTH];
+extern Pedge poly_map[MAP_WIDTH * MAP_WIDTH + MAP_HEIGTH]; 
+extern SDL_Vertex vertex[MAP_WIDTH * MAP_HEIGTH];
 extern int vertex_index;
 
 #endif

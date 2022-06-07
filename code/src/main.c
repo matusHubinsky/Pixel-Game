@@ -14,15 +14,7 @@
 #include "vector.h"
 #include "physic.h"
 
-
-// global const
-const int block = 32;
-const int step_walk = 32;     
-const int step_teleport = 64;
-const int screen_width = 1280;
-const int screen_heigth = 960;
-const int map_width = 40;
-const int map_height = 30;
+    
 
 int poly_map_index, edge_map_index, visible_map_index = 0; 
 
@@ -38,11 +30,10 @@ SDL_Texture* texture = NULL;
 struct Creature player;
 struct Creature enemies [enemy_number];
 
-Edge edgeMap[1200]; 
-Vedge visibleMap[1200];
-Pedge poly_map[40*40 + 30];
-
-SDL_Vertex vertex[1200];
+Edge edgeMap[MAP_WIDTH * MAP_HEIGTH]; 
+Vedge visibleMap[MAP_WIDTH * MAP_HEIGTH];
+Pedge poly_map[MAP_WIDTH * MAP_WIDTH + MAP_HEIGTH]; 
+SDL_Vertex vertex[MAP_WIDTH * MAP_HEIGTH];
 int vertex_index = 0;
 
 int main(int argc, char* args[])
@@ -52,14 +43,13 @@ int main(int argc, char* args[])
         fprintf(stderr, "Failed to initialize!\n");
         exit(1);
 	}
+
     InitPlayer();
 
     SDL_Event e;
 
     int frameTime;            
     float secondsElapsed = 60.0f;
-    const int FPS = 60;
-    const int frameDelay = 1000 / FPS;
     long long int frameStart;
 
     WorldMap();
@@ -71,6 +61,8 @@ int main(int argc, char* args[])
 
     int i = 0;
     float sum = 0.0f;
+
+    getRenderInfo();
 
     while (quit != true)
     {
@@ -94,7 +86,7 @@ int main(int argc, char* args[])
             {
                 frameTime = SDL_GetTicks() - frameStart;
 
-                while (frameDelay > frameTime)
+                while (FRAME_DELAY > frameTime)
                 {
                     AI();
                     updatePhysic();
@@ -106,7 +98,7 @@ int main(int argc, char* args[])
         }   
         end = SDL_GetPerformanceCounter();
         sum += (end - start) / (float)SDL_GetPerformanceFrequency();
-        if (i == 8)
+        if (i == FRAME_DELAY)
         {
             secondsElapsed = sum / i;
             sum = 0.0f; i = 0;
