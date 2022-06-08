@@ -1,14 +1,8 @@
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <math.h>
-
 #include "init.h"
 #include "keyboard.h"
 #include "textures.h"
 #include "map.h"
-#include "main.h"
 #include "light.h"
 #include "world.h"
 #include "vector.h"
@@ -55,7 +49,7 @@ int main(int argc, char* args[])
         
         AI(&shared);
         updatePhysic(&shared);
-        Intersections1(&shared);
+        Intersections1(&shared, KEYS);
         DrawAll(secondsElapsed, KEYS, &shared);            
         
         while (SDL_PollEvent(&e) != 0)
@@ -72,7 +66,7 @@ int main(int argc, char* args[])
                 {
                     AI(&shared);
                     updatePhysic(&shared);
-                    Intersections1(&shared);
+                    Intersections1(&shared, KEYS);
                     DrawAll(secondsElapsed, KEYS, &shared);
                     frameTime = SDL_GetTicks() - frameStart;
                 }   

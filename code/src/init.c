@@ -2,7 +2,6 @@
 #include "keyboard.h"
 #include "textures.h"
 #include "map.h"
-#include "main.h"
 #include "light.h"
 #include "world.h"
 #include "vector.h"
@@ -10,8 +9,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
-#include "textures.h"
 
 
 bool InitWorld(bool KEYS[322])
@@ -64,6 +61,7 @@ bool InitWorld(bool KEYS[322])
     for (int i = 0; i < 322; i++) KEYS[i] = false; 
     KEYS[SDLK_5] = true;
     KEYS[SDLK_6] = true;
+    KEYS[SDLK_0] = true;
 
     return status;
 }

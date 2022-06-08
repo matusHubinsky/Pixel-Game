@@ -1,4 +1,3 @@
-#include "keyboard.h"
 
 #include "battle.h"
 #include "main.h"
@@ -8,9 +7,6 @@
 #include "light.h"
 #include "textures.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
 
 
 void keyboard_input(SDL_Event event, bool KEYS[322], t_vertexs * shared)

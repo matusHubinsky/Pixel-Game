@@ -1,14 +1,7 @@
 #ifndef TEXTURES_H_
 #define TEXTURES_H_
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-
-#include <stdio.h>
-#include <stdbool.h>  
-
 #include "main.h"
-
 
 // void setBlendMode( SDL_BlendMode blending );
 // void setAlpha( Uint8 a );

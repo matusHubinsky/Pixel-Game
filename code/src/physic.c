@@ -1,13 +1,8 @@
 
-#include "physic.h"
 #include "textures.h"
 #include "light.h"
 #include "map.h"
 #include "battle.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-
 
 void updateMap()
 {

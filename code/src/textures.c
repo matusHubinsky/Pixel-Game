@@ -166,7 +166,7 @@ void DrawDark()
     rect.h = 960 - 64;
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x55);
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x70);
     SDL_RenderFillRect(renderer, &rect);
 }
 
@@ -426,25 +426,25 @@ void PrepareTriangles(t_vertexs * shared)
         shared -> vertex[j].position.x = (int) player.rec.x + 16;
         shared -> vertex[j].position.y = (int) player.rec.y + 16;
         shared -> vertex[j].color.r = 255;
-        shared -> vertex[j].color.g = 255;
+        shared -> vertex[j].color.g = 200;
         shared -> vertex[j].color.b = 255;
-        shared -> vertex[j].color.a = 30;
+        shared -> vertex[j].color.a = 25;
         j++;
 
         shared -> vertex[j].position.x = (int) shared -> visibleMap[i + 0].x;
         shared -> vertex[j].position.y = (int) shared -> visibleMap[i + 0].y;
         shared -> vertex[j].color.r = 255;
-        shared -> vertex[j].color.g = 255;
+        shared -> vertex[j].color.g = 200;
         shared -> vertex[j].color.b = 255;
-        shared -> vertex[j].color.a = 20;
+        shared -> vertex[j].color.a = 25;
         j++;
 
         shared -> vertex[j].position.x = (int) shared -> visibleMap[(i + 1) % shared -> visible_map_index].x;
         shared -> vertex[j].position.y = (int) shared -> visibleMap[(i + 1) % shared -> visible_map_index].y;   
         shared -> vertex[j].color.r = 255;
-        shared -> vertex[j].color.g = 255;
+        shared -> vertex[j].color.g = 200;
         shared -> vertex[j].color.b = 255;
-        shared -> vertex[j].color.a = 20;
+        shared -> vertex[j].color.a = 25;
         j++;         
     }
     shared -> vertex_index = j;
@@ -462,8 +462,7 @@ void DrawAll(float secondsElapsed, bool KEYS[322], t_vertexs * shared)
 
         // my texture rendering
         DrawMap();                          // map 
-        DrawCreatures();                    // creatures
-
+        
         if (KEYS[SDLK_1]) DrawBlocks(shared);     // draw all blocks          (blue)
         if (KEYS[SDLK_2]) DrawEdges(shared);      // draw all edges           (red)
         if (KEYS[SDLK_3]) VisibleEdges(shared);   // draw all visible lines   (green)
@@ -472,17 +471,20 @@ void DrawAll(float secondsElapsed, bool KEYS[322], t_vertexs * shared)
 
         if (KEYS[SDLK_4]) enemySight();     // draw enemy lines of sight
         if (KEYS[SDLK_5]) DrawFPS(secondsElapsed);
-        if (KEYS[SDLK_6])
-        {
-            TriagnleTexture(triangle_texture);
-            PrepareTriangles(shared);
-            DrawDark();
-            SDL_RenderGeometry(renderer, triangle_texture, shared -> vertex, shared -> vertex_index, NULL, 0);
-        }
         if (KEYS[SDLK_7]) 
         {
             getRenderInfo();
             KEYS[SDLK_7] = false;
+        }
+
+        DrawDark();
+        DrawCreatures();                    // creatures
+
+        if (KEYS[SDLK_6])
+        {
+            TriagnleTexture(triangle_texture);
+            PrepareTriangles(shared);
+            SDL_RenderGeometry(renderer, triangle_texture, shared -> vertex, shared -> vertex_index, NULL, 0);
         }
 
         // SDL render

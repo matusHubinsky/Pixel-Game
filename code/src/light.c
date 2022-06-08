@@ -1,16 +1,12 @@
 
 #include "map.h"
 #include "textures.h"
-#include "light.h"
-
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "keyboard.h"
 
 
 void Merge(t_vertexs * shared)
 {
+    float mistake = 0.01f;
     int k = 0;
     Vedge points[shared -> visible_map_index];
 
@@ -18,12 +14,12 @@ void Merge(t_vertexs * shared)
 
     for (int i = 0; i < shared -> visible_map_index - 1; i++)
     {
-        if ((fabs(shared -> visibleMap[i].x - shared -> visibleMap[i + 1].x)) > 0.01f) 
+        if ((fabs(shared -> visibleMap[i].x - shared -> visibleMap[i + 1].x)) > mistake) 
         {
             points[k] = shared -> visibleMap[i];
             k++;
         }
-        else if ((fabs(shared -> visibleMap[i].y - shared -> visibleMap[i + 1].y)) > 0.01f)
+        else if ((fabs(shared -> visibleMap[i].y - shared -> visibleMap[i + 1].y)) > mistake)
         {
             points[k] = shared -> visibleMap[i];
             k++;
@@ -185,7 +181,7 @@ void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch, t_vertex
 }
 
 
-void Intersections1(t_vertexs * shared)
+void Intersections1(t_vertexs * shared, bool KEYS[322])
 {   
     player.rec.x += 16;
     player.rec.y += 16;
@@ -269,5 +265,5 @@ void Intersections1(t_vertexs * shared)
             }
         }
     }
-    Merge(shared);
+    if (KEYS[SDLK_0]) Merge(shared);
 }

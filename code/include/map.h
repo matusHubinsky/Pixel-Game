@@ -1,10 +1,6 @@
 #ifndef MAP_H_
 #define MAP_H_
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <stdio.h>
-
 #include "main.h"
 
 void RandomizeMap();    
