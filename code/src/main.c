@@ -15,11 +15,6 @@
 #include "physic.h"
 
     
-int poly_map_index, edge_map_index, visible_map_index = 0; 
-
-bool quit = false;
-
-
 lvl Cmap;
 
 SDL_Window* window = NULL;
@@ -33,22 +28,21 @@ Edge edgeMap[MAP_WIDTH * MAP_HEIGTH];
 Vedge visibleMap[MAP_WIDTH * MAP_HEIGTH];
 Pedge poly_map[MAP_WIDTH * MAP_WIDTH + MAP_HEIGTH]; 
 SDL_Vertex vertex[MAP_WIDTH * MAP_HEIGTH];
-int vertex_index = 0;
+
+int poly_map_index, edge_map_index, visible_map_index, vertex_index = 0; 
+
 
 int main(int argc, char* args[])
 {
     bool KEYS[322];
-   
 	if(!InitWorld(KEYS))
 	{
         fprintf(stderr, "Failed to initialize!\n");
         exit(1);
 	}
-
     InitPlayer();
 
     SDL_Event e;
-
     int frameTime;            
     float secondsElapsed = 60.0f;
     long long int frameStart;
@@ -60,7 +54,7 @@ int main(int argc, char* args[])
     int start = 0; int end = 0; int i = 0;
     float sum = 0.0f;
 
-    while (quit != true)
+    while (true)
     {
         start = SDL_GetPerformanceCounter();
         frameStart = SDL_GetTicks();
@@ -72,13 +66,11 @@ int main(int argc, char* args[])
         
         while (SDL_PollEvent(&e) != 0)
         {
-     
-            if (e.type == SDL_QUIT) quit = true;
-            else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
+            if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
             {
                 keyboard(e, KEYS);
             }
-           else
+            else
             {
                 frameTime = SDL_GetTicks() - frameStart;
 

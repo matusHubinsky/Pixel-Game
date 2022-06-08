@@ -92,8 +92,8 @@ void keyboard(SDL_Event event, bool KEYS[322])
             // CLOSE GAME
             case SDLK_ESCAPE:
                 player.health = 0;
-                quit = true;
-                break;
+                CloseInit();
+                exit(0);
 
             default:
                 if (KEYS[event.key.keysym.sym]) KEYS[event.key.keysym.sym] = false;

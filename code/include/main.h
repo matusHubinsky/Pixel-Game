@@ -2,6 +2,7 @@
 #define MAIN_H_
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 #include <SDL2/SDL.h>
@@ -11,7 +12,8 @@
 
 #include "const.h"
 
-// indexs
+
+// indexs;
 extern int poly_map_index;
 extern int edge_map_index;
 extern int visible_map_index; 
@@ -22,8 +24,6 @@ typedef int lvl[30][40];
 extern lvl world[4];	
 extern lvl map; 
 extern lvl Cmap;
-
-extern bool quit;
 
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
