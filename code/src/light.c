@@ -9,36 +9,36 @@
 #include <string.h>
 
 
-void Merge()
+void Merge(t_vertexs * shared)
 {
     int k = 0;
-    Vedge points[visible_map_index];
+    Vedge points[shared -> visible_map_index];
 
     // This shouldn't work
 
-    for (int i = 0; i < visible_map_index - 1; i++)
+    for (int i = 0; i < shared -> visible_map_index - 1; i++)
     {
-        if ((fabs(visibleMap[i].x - visibleMap[i + 1].x)) > 0.01f) 
+        if ((fabs(shared -> visibleMap[i].x - shared -> visibleMap[i + 1].x)) > 0.01f) 
         {
-            points[k] = visibleMap[i];
+            points[k] = shared -> visibleMap[i];
             k++;
         }
-        else if ((fabs(visibleMap[i].y - visibleMap[i + 1].y)) > 0.01f)
+        else if ((fabs(shared -> visibleMap[i].y - shared -> visibleMap[i + 1].y)) > 0.01f)
         {
-            points[k] = visibleMap[i];
+            points[k] = shared -> visibleMap[i];
             k++;
         }
     }
     
     for (int i = 0; i < k; i++)
     {
-        visibleMap[i] = points[i];
+        shared -> visibleMap[i] = points[i];
     }
-    visible_map_index = k;
+    shared -> visible_map_index = k;
 }
 
 
-void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch)
+void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch, t_vertexs * shared)
 {
     sx += 1;
     sy += 1;
@@ -46,7 +46,7 @@ void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch)
 
     for (int i = 0; i < (30*30 + 40); i++)
     {
-        poly_map[i].exist = false;
+        shared -> poly_map[i].exist = false;
     }
 
     // initialiaztion
@@ -56,24 +56,24 @@ void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch)
         {
             if (map[y][x] == 3 || map[y][x] == 2) value = true;
             else value = false;
-            poly_map[y*pitch + x].exist = value;
+            shared -> poly_map[y*pitch + x].exist = value;
             for (int i = 0; i < 4; i++)
             {
-                poly_map[y * pitch +  x].edge_exist[i] = false;
-                poly_map[y * pitch +  x].edge_id[i] = 0;
+                shared -> poly_map[y * pitch +  x].edge_exist[i] = false;
+                shared -> poly_map[y * pitch +  x].edge_id[i] = 0;
             }
         }
     }
 
-    for (int i = 0; i < edge_map_index; i++)
+    for (int i = 0; i < shared -> edge_map_index; i++)
     {
-        edgeMap[i].start_x = -1;
-        edgeMap[i].start_y = -1;
-        edgeMap[i].end_x = -1;
-        edgeMap[i].end_y = -1;
+        shared -> edgeMap[i].start_x = -1;
+        shared -> edgeMap[i].start_y = -1;
+        shared -> edgeMap[i].end_x = -1;
+        shared -> edgeMap[i].end_y = -1;
     }
 
-    edge_map_index = 0;
+    shared -> edge_map_index = 0;
     // searching for edges
 
     for (int x = 0; x < w; x++)
@@ -86,97 +86,97 @@ void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch)
             int w = (y + sy) * pitch + (x + sx - 1);    // Western Neighbour
             int e = (y + sy) * pitch + (x + sx + 1);    // Eastern Neighbour
 
-            if (poly_map[i].exist)
+            if (shared -> poly_map[i].exist)
             {
-                if (!poly_map[w].exist)
+                if (!shared -> poly_map[w].exist)
                 {
-                    if (poly_map[n].edge_exist[WEST])
+                    if (shared -> poly_map[n].edge_exist[WEST])
                     {
-                        edgeMap[poly_map[n].edge_id[WEST]].end_y += BLOCK;
-                        poly_map[i].edge_id[WEST] = poly_map[n].edge_id[WEST];
-                        poly_map[i].edge_exist[WEST] = true;
+                        shared -> edgeMap[shared -> poly_map[n].edge_id[WEST]].end_y += BLOCK;
+                        shared -> poly_map[i].edge_id[WEST] = shared -> poly_map[n].edge_id[WEST];
+                        shared -> poly_map[i].edge_exist[WEST] = true;
                     }
                     else
                     {
-                        edgeMap[edge_map_index].start_x = (sx + x) * BLOCK; 
-                        edgeMap[edge_map_index].start_y = (sy + y) * BLOCK;
+                        shared -> edgeMap[shared -> edge_map_index].start_x = (sx + x) * BLOCK; 
+                        shared -> edgeMap[shared -> edge_map_index].start_y = (sy + y) * BLOCK;
 
-                        edgeMap[edge_map_index].end_x = edgeMap[edge_map_index].start_x; 
-                        edgeMap[edge_map_index].end_y = edgeMap[edge_map_index].start_y + BLOCK;
+                        shared -> edgeMap[shared -> edge_map_index].end_x = shared -> edgeMap[shared -> edge_map_index].start_x; 
+                        shared -> edgeMap[shared -> edge_map_index].end_y = shared -> edgeMap[shared -> edge_map_index].start_y + BLOCK;
 
-                        int edge_id = edge_map_index;
-                        edge_map_index++;
+                        int edge_id = shared -> edge_map_index;
+                        shared -> edge_map_index++;
 
-                        poly_map[i].edge_id[WEST] = edge_id;
-                        poly_map[i].edge_exist[WEST] = true;
+                        shared -> poly_map[i].edge_id[WEST] = edge_id;
+                        shared -> poly_map[i].edge_exist[WEST] = true;
                     }
                 }
 
-                if (!poly_map[e].exist)
+                if (!shared -> poly_map[e].exist)
                 {
-                    if (poly_map[n].edge_exist[EAST])
+                    if (shared -> poly_map[n].edge_exist[EAST])
                     {
-                        edgeMap[poly_map[n].edge_id[EAST]].end_y += BLOCK;
-                        poly_map[i].edge_id[EAST] = poly_map[n].edge_id[EAST];
-                        poly_map[i].edge_exist[EAST] = true;
+                        shared -> edgeMap[shared -> poly_map[n].edge_id[EAST]].end_y += BLOCK;
+                        shared -> poly_map[i].edge_id[EAST] = shared -> poly_map[n].edge_id[EAST];
+                        shared -> poly_map[i].edge_exist[EAST] = true;
                     }
                     else
                     {
-                        edgeMap[edge_map_index].start_x = (sx + x + 1) * BLOCK; 
-                        edgeMap[edge_map_index].start_y = (sy + y) * BLOCK;
-                        edgeMap[edge_map_index].end_x = edgeMap[edge_map_index].start_x; 
-                        edgeMap[edge_map_index].end_y = edgeMap[edge_map_index].start_y + BLOCK;
+                        shared -> edgeMap[shared -> edge_map_index].start_x = (sx + x + 1) * BLOCK; 
+                        shared -> edgeMap[shared -> edge_map_index].start_y = (sy + y) * BLOCK;
+                        shared -> edgeMap[shared -> edge_map_index].end_x = shared -> edgeMap[shared -> edge_map_index].start_x; 
+                        shared -> edgeMap[shared -> edge_map_index].end_y = shared -> edgeMap[shared -> edge_map_index].start_y + BLOCK;
 
-                        int edge_id = edge_map_index;
-                        edge_map_index++;
+                        int edge_id = shared -> edge_map_index;
+                        shared -> edge_map_index++;
 
-                        poly_map[i].edge_id[EAST] = edge_id;
-                        poly_map[i].edge_exist[EAST] = true;
+                        shared -> poly_map[i].edge_id[EAST] = edge_id;
+                        shared -> poly_map[i].edge_exist[EAST] = true;
                     }
                 }
-                if (!poly_map[n].exist)
+                if (!shared -> poly_map[n].exist)
                 {
-                    if (poly_map[w].edge_exist[NORTH])
+                    if (shared -> poly_map[w].edge_exist[NORTH])
                     {
-                        edgeMap[poly_map[w].edge_id[NORTH]].end_x += BLOCK;
-                        poly_map[i].edge_id[NORTH] = poly_map[w].edge_id[NORTH];
-                        poly_map[i].edge_exist[NORTH] = true;
+                        shared -> edgeMap[shared -> poly_map[w].edge_id[NORTH]].end_x += BLOCK;
+                        shared -> poly_map[i].edge_id[NORTH] = shared -> poly_map[w].edge_id[NORTH];
+                        shared -> poly_map[i].edge_exist[NORTH] = true;
                     }
                     else
                     {
-                        edgeMap[edge_map_index].start_x = (sx + x) * BLOCK; 
-                        edgeMap[edge_map_index].start_y = (sy + y) * BLOCK;
-                        edgeMap[edge_map_index].end_x = edgeMap[edge_map_index].start_x + BLOCK; 
-                        edgeMap[edge_map_index].end_y = edgeMap[edge_map_index].start_y;
+                        shared -> edgeMap[shared -> edge_map_index].start_x = (sx + x) * BLOCK; 
+                        shared -> edgeMap[shared -> edge_map_index].start_y = (sy + y) * BLOCK;
+                        shared -> edgeMap[shared -> edge_map_index].end_x = shared -> edgeMap[shared -> edge_map_index].start_x + BLOCK; 
+                        shared -> edgeMap[shared -> edge_map_index].end_y = shared -> edgeMap[shared -> edge_map_index].start_y;
                         
-                        int edge_id = edge_map_index;
-                        edge_map_index++;
+                        int edge_id = shared -> edge_map_index;
+                        shared -> edge_map_index++;
 
-                        poly_map[i].edge_id[NORTH] = edge_id;
-                        poly_map[i].edge_exist[NORTH] = true;
+                        shared -> poly_map[i].edge_id[NORTH] = edge_id;
+                        shared -> poly_map[i].edge_exist[NORTH] = true;
                     }
                 }
-                if (!poly_map[s].exist)
+                if (!shared -> poly_map[s].exist)
                 {
 
-                    if (poly_map[w].edge_exist[SOUTH])
+                    if (shared -> poly_map[w].edge_exist[SOUTH])
                     {
-                        edgeMap[poly_map[w].edge_id[SOUTH]].end_x += BLOCK;
-                        poly_map[i].edge_id[SOUTH] = poly_map[w].edge_id[SOUTH];
-                        poly_map[i].edge_exist[SOUTH] = true;
+                        shared -> edgeMap[shared -> poly_map[w].edge_id[SOUTH]].end_x += BLOCK;
+                        shared -> poly_map[i].edge_id[SOUTH] = shared -> poly_map[w].edge_id[SOUTH];
+                        shared -> poly_map[i].edge_exist[SOUTH] = true;
                     }
                     else
                     {
-                        edgeMap[edge_map_index].start_x = (sx + x) * BLOCK; 
-                        edgeMap[edge_map_index].start_y = (sy + y + 1) * BLOCK;
-                        edgeMap[edge_map_index].end_x = edgeMap[edge_map_index].start_x + BLOCK; 
-                        edgeMap[edge_map_index].end_y = edgeMap[edge_map_index].start_y;
+                        shared -> edgeMap[shared -> edge_map_index].start_x = (sx + x) * BLOCK; 
+                        shared -> edgeMap[shared -> edge_map_index].start_y = (sy + y + 1) * BLOCK;
+                        shared -> edgeMap[shared -> edge_map_index].end_x = shared -> edgeMap[shared -> edge_map_index].start_x + BLOCK; 
+                        shared -> edgeMap[shared -> edge_map_index].end_y = shared -> edgeMap[shared -> edge_map_index].start_y;
 
-                        int edge_id = edge_map_index;
-                        edge_map_index++;
+                        int edge_id = shared -> edge_map_index;
+                        shared -> edge_map_index++;
                         
-                        poly_map[i].edge_id[SOUTH] = edge_id;
-                        poly_map[i].edge_exist[SOUTH] = true;
+                        shared -> poly_map[i].edge_id[SOUTH] = edge_id;
+                        shared -> poly_map[i].edge_exist[SOUTH] = true;
                     }
                 }
             }
@@ -185,16 +185,16 @@ void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch)
 }
 
 
-void Intersections1()
+void Intersections1(t_vertexs * shared)
 {   
     player.rec.x += 16;
     player.rec.y += 16;
 
-    visible_map_index = 0;
+    shared -> visible_map_index = 0;
 
-    for (int a = 0; a < edge_map_index; a++)
+    for (int a = 0; a < shared -> edge_map_index; a++)
     {
-        Edge e1 = edgeMap[a];
+        Edge e1 = shared -> edgeMap[a];
         for (int i = 0; i < 2; i++)
         {
             float rdx, rdy;
@@ -218,9 +218,9 @@ void Intersections1()
                 float min_px = 0, min_py = 0, min_ang = 0;
                 bool valid = false;
 
-                for (int b = 0; b < edge_map_index; b++)
+                for (int b = 0; b < shared -> edge_map_index; b++)
                 {
-                    Edge e2 = edgeMap[b];
+                    Edge e2 = shared -> edgeMap[b];
                     float sdx = e2.end_x - e2.start_x;
                     float sdy = e2.end_y - e2.start_y;
 
@@ -244,10 +244,10 @@ void Intersections1()
                 }
                 if (valid == true)
                 {   
-                    visibleMap[visible_map_index].x = min_px;
-                    visibleMap[visible_map_index].y = min_py;
-                    visibleMap[visible_map_index].a = min_ang;
-                    visible_map_index++;
+                    shared -> visibleMap[shared -> visible_map_index].x = min_px;
+                    shared -> visibleMap[shared -> visible_map_index].y = min_py;
+                    shared -> visibleMap[shared -> visible_map_index].a = min_ang;
+                    shared -> visible_map_index++;
                 } 
             }
         }
@@ -257,17 +257,17 @@ void Intersections1()
     // this fix is awesome
     Vedge swap;
 
-    for (int i = 0; i < visible_map_index; i++)
+    for (int i = 0; i < shared -> visible_map_index; i++)
     {
-        for (int j = 0; j < visible_map_index; j++)
+        for (int j = 0; j < shared -> visible_map_index; j++)
         {
-            if (visibleMap[j].a > visibleMap[j + 1].a)
+            if (shared -> visibleMap[j].a > shared -> visibleMap[j + 1].a)
             {
-                swap = visibleMap[j];
-                visibleMap[j] = visibleMap[j + 1];
-                visibleMap[j + 1] = swap; 
+                swap = shared -> visibleMap[j];
+                shared -> visibleMap[j] = shared -> visibleMap[j + 1];
+                shared -> visibleMap[j + 1] = swap; 
             }
         }
     }
-    Merge();
+    Merge(shared);
 }

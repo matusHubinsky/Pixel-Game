@@ -63,6 +63,7 @@ bool InitWorld(bool KEYS[322])
 
     for (int i = 0; i < 322; i++) KEYS[i] = false; 
     KEYS[SDLK_5] = true;
+    KEYS[SDLK_6] = true;
 
     return status;
 }
@@ -147,12 +148,12 @@ void InitPlayer()
 
 
 
-void InitReborn()
+void InitReborn(t_vertexs * shared)
 {
     InitPlayer();
 
     WorldMap();
-    RewriteMap(map, world[0]);
+    RewriteMap(map, world[0], shared);
     CreateMap();
 }
 

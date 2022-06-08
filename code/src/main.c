@@ -24,12 +24,7 @@ SDL_Texture* texture = NULL;
 struct Creature player;
 struct Creature enemies [ENEMY_NUMBER];
 
-Edge edgeMap[MAP_WIDTH * MAP_HEIGTH]; 
-Vedge visibleMap[MAP_WIDTH * MAP_HEIGTH];
-Pedge poly_map[MAP_WIDTH * MAP_WIDTH + MAP_HEIGTH]; 
-SDL_Vertex vertex[MAP_WIDTH * MAP_HEIGTH];
-
-int poly_map_index, edge_map_index, visible_map_index, vertex_index = 0; 
+t_vertexs shared;
 
 
 int main(int argc, char* args[])
@@ -40,35 +35,34 @@ int main(int argc, char* args[])
         fprintf(stderr, "Failed to initialize!\n");
         exit(1);
 	}
-    InitPlayer();
 
     SDL_Event e;
-    int frameTime;            
+    int frameTime = 0;            
     float secondsElapsed = 60.0f;
-    long long int frameStart;
-
-    WorldMap();
-    RewriteMap(map, world[lvlN]);
-    CreateMap();
-
+    long long int frameStart;    
     int start = 0; int end = 0; int i = 0;
     float sum = 0.0f;
+
+    InitPlayer();
+    WorldMap();
+    RewriteMap(map, world[lvlN], &shared);
+    CreateMap();
 
     while (true)
     {
         start = SDL_GetPerformanceCounter();
         frameStart = SDL_GetTicks();
         
-        AI();
-        updatePhysic();
-        Intersections1();
-        DrawAll(secondsElapsed, KEYS);            
+        AI(&shared);
+        updatePhysic(&shared);
+        Intersections1(&shared);
+        DrawAll(secondsElapsed, KEYS, &shared);            
         
         while (SDL_PollEvent(&e) != 0)
         {
             if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
             {
-                keyboard(e, KEYS);
+                keyboard_input(e, KEYS, &shared);
             }
             else
             {
@@ -76,10 +70,10 @@ int main(int argc, char* args[])
 
                 while (FRAME_DELAY > frameTime)
                 {
-                    AI();
-                    updatePhysic();
-                    Intersections1();
-                    DrawAll(secondsElapsed, KEYS);
+                    AI(&shared);
+                    updatePhysic(&shared);
+                    Intersections1(&shared);
+                    DrawAll(secondsElapsed, KEYS, &shared);
                     frameTime = SDL_GetTicks() - frameStart;
                 }   
             }
@@ -93,7 +87,6 @@ int main(int argc, char* args[])
         } 
         i++;
     }
-
 	CloseInit();
 	return 0;
 }

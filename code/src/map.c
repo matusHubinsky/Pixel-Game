@@ -75,7 +75,7 @@ void CreateMap() // nacitanie textur
 }
 
 
-void DoorMap() // teleportacia pri vstupe do dveri
+void DoorMap(t_vertexs * shared) // teleportacia pri vstupe do dveri
 {
     // printf("Mapa: %i   %i %i\n", lvlN, player.rec.x, player.rec.y);
     if (player.rec.x >= 32 && player.rec.x <= 64)
@@ -83,7 +83,7 @@ void DoorMap() // teleportacia pri vstupe do dveri
         if ((player.rec.y >= 416 && player.rec.y <= 448) || (player.rec.y >= 480 && player.rec.y <= 512))
         {
             player.rec.x = 1248 - 64;
-            RewriteMap(map, world[lvlN-1]);
+            RewriteMap(map, world[lvlN-1], shared);
             lvlN--;
         } 
     }
@@ -92,7 +92,7 @@ void DoorMap() // teleportacia pri vstupe do dveri
         if ((player.rec.y >= 416 && player.rec.y <= 448) || (player.rec.y >= 480 && player.rec.y <= 512))
         {
             player.rec.x = 64;
-            RewriteMap(map, world[lvlN+1]);
+            RewriteMap(map, world[lvlN+1], shared);
             lvlN++;
         }
     }
@@ -134,7 +134,7 @@ void WorldMap() // nastavenie dveri
 }
 
 
-void RewriteMap(int first[30][40], int second[30][40]) // zmena mapy
+void RewriteMap(int first[30][40], int second[30][40], t_vertexs * shared) // zmena mapy
 {
 	for (int i = 0; i < 30; i++)
 	{
@@ -145,6 +145,6 @@ void RewriteMap(int first[30][40], int second[30][40]) // zmena mapy
 	}
     CreateMap();
     RandomizeMap();
-    CellsMap(0, 0, 40, 30, 32, 40);
+    CellsMap(0, 0, 40, 30, 32, 40, shared);
 }
 

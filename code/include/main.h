@@ -12,7 +12,6 @@
 
 #include "const.h"
 
-
 // indexs;
 extern int poly_map_index;
 extern int edge_map_index;
@@ -79,26 +78,22 @@ typedef struct poly_edge
 	bool exist;	
 } Pedge;
 
-typedef struct vertexs
+typedef struct t_vertexs
 {
 	// structures
-	Edge sedgeMap[MAP_WIDTH * MAP_HEIGTH]; 
+	Edge edgeMap[MAP_WIDTH * MAP_HEIGTH]; 
 	Vedge visibleMap[MAP_WIDTH * MAP_HEIGTH];
 	Pedge poly_map[MAP_WIDTH*MAP_WIDTH  + MAP_HEIGTH]; 
+	SDL_Vertex vertex[MAP_WIDTH * MAP_HEIGTH];
 
 	//indexs
 	int poly_map_index;
 	int edge_map_index;
 	int visible_map_index; 
-} Vertexs;
+	int vertex_index;
+} t_vertexs;
 
 extern struct Creature player;
 extern struct Creature enemies [ENEMY_NUMBER];
-
-extern Edge edgeMap[MAP_WIDTH * MAP_HEIGTH]; 
-extern Vedge visibleMap[MAP_WIDTH * MAP_HEIGTH];
-extern Pedge poly_map[MAP_WIDTH * MAP_WIDTH + MAP_HEIGTH]; 
-extern SDL_Vertex vertex[MAP_WIDTH * MAP_HEIGTH];
-extern int vertex_index;
 
 #endif

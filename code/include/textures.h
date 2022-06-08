@@ -25,23 +25,23 @@ void fill_triangle(int x1, int y1, int x2, int y2, int x3, int y3, Uint8 r, Uint
 void DrawMap();
 void DrawCreatures();
 
-void DrawEdges();
-void DrawBlocks();
+void DrawEdges(t_vertexs * shared);
+void DrawBlocks(t_vertexs * shared);
 
 void DrawDark();
-void VisibleEdges();
-void VisibleTriangles();
+void VisibleEdges(t_vertexs * shared);
+void VisibleTriangles(t_vertexs * shared);
 
 void ChangePlayerPicture(Creature player);
 void enemySight();
 void DeathScreen();
 void AttackAnimation(bool up, bool down, bool left, bool right);
-void PrepareTriangles();
+void PrepareTriangles(t_vertexs * shared);
 void DrawFPS(float secondsElapsed);
 
 SDL_Texture* LoadTexture(const char* path);
 
-void DrawAll(float secondsElapsed, bool KEYS[322]);
+void DrawAll(float secondsElapsed, bool KEYS[322], t_vertexs * shared);
 void getRenderInfo();
 
 #endif

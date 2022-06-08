@@ -10,11 +10,9 @@
 
 #include "main.h"
 
-
-void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch);
-
-void Intersections1();
-void Merge();
+void Merge(t_vertexs * shared);
+void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch, t_vertexs * shared);
+void Intersections1(t_vertexs * shared);
 
 
 #endif

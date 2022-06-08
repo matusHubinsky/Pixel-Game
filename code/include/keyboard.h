@@ -8,6 +8,6 @@
 
 #include "main.h"
 
-void keyboard(SDL_Event event, bool KEYS[322]);
+void keyboard_input(SDL_Event event, bool KEYS[322], t_vertexs * shared);
 
 #endif

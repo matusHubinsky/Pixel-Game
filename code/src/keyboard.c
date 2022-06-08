@@ -8,20 +8,13 @@
 #include "light.h"
 #include "textures.h"
 
-#include <sys/time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
 
-struct timeval start, stop;
-double secs = 0;
-
-void keyboard(SDL_Event event, bool KEYS[322])
+void keyboard_input(SDL_Event event, bool KEYS[322], t_vertexs * shared)
 {
-    //    gettimeofday(&stop, NULL);
-    //    secs = (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);
-
     if (event.type == SDL_KEYDOWN)
     {
         switch (event.key.keysym.sym)
@@ -48,7 +41,7 @@ void keyboard(SDL_Event event, bool KEYS[322])
 
             // MAP
             case SDLK_m:
-                DoorMap();            
+                DoorMap(shared);            
                 break;
 
             // FULLSCREEN
@@ -85,7 +78,7 @@ void keyboard(SDL_Event event, bool KEYS[322])
                 if (player.health == 0)
                 {
                     player.health = 10;
-                    InitReborn();
+                    InitReborn(shared);
                 }
                 break;
 
@@ -143,5 +136,4 @@ void keyboard(SDL_Event event, bool KEYS[322])
                 break;
         }
     }
-    //  gettimeofday(&start, NULL);
 }

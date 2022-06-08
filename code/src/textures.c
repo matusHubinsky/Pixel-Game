@@ -122,31 +122,34 @@ void DrawCreatures()
 
     for (int i = 0; i < ENEMY_NUMBER; i++)
     {
-        SDL_RenderCopy(renderer, enemies[i].tex, &enemies[i].src, &enemies[i].rec); 
+        if (enemies[i].health != 0 && enemies[i].vidim) 
+        {
+            SDL_RenderCopy(renderer, enemies[i].tex, &enemies[i].src, &enemies[i].rec);     
+        }
     }
 }
 
 
-void DrawEdges()
+void DrawEdges(t_vertexs * shared)
 {
-    for (int i = 0; i < edge_map_index; i++)
+    for (int i = 0; i < shared -> edge_map_index; i++)
     {
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
-        SDL_RenderDrawLine(renderer, edgeMap[i].start_x, edgeMap[i].start_y , edgeMap[i].end_x, edgeMap[i].end_y);
-        fill_circle(edgeMap[i].start_x, edgeMap[i].start_y, 6, 0x00, 0x00, 0xFF, 0xFF);
-        fill_circle(edgeMap[i].end_x, edgeMap[i].end_y, 6, 0x00, 0x00, 0xFF, 0xFF);
+        SDL_RenderDrawLine(renderer, shared -> edgeMap[i].start_x, shared -> edgeMap[i].start_y , shared -> edgeMap[i].end_x, shared -> edgeMap[i].end_y);
+        fill_circle(shared -> edgeMap[i].start_x, shared -> edgeMap[i].start_y, 6, 0x00, 0x00, 0xFF, 0xFF);
+        fill_circle(shared -> edgeMap[i].end_x, shared -> edgeMap[i].end_y, 6, 0x00, 0x00, 0xFF, 0xFF);
     }
 }
 
 
-void DrawBlocks()
+void DrawBlocks(t_vertexs * shared)
 {
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     for (int x = 0; x < 40; x++)
     {
         for (int y = 0; y < 30 ; y++)
         {
-            if (poly_map[y*40 + x].exist) 
+            if (shared -> poly_map[y*40 + x].exist) 
             {
                 fill_rectangle(x * BLOCK, y * BLOCK, BLOCK, 0xFF, 0x00, 0x00, 0x55);
             }
@@ -168,59 +171,59 @@ void DrawDark()
 }
 
 
-void VisibleEdges()
+void VisibleEdges(t_vertexs * shared)
 {
     SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
-    // fprintf(file_ptr, "%i\n", visible_map_index);
+    // fprintf(file_ptr, "%i\n", shared -> visible_map_index);
 
     if (player.skin == 1)
     {
-        for (int i = 0; i < visible_map_index; i++)
+        for (int i = 0; i < shared -> visible_map_index; i++)
         {
-            SDL_RenderDrawLine(renderer, player.rec.x + 16, player.rec.y + 16, visibleMap[i].x, visibleMap[i].y);
+            SDL_RenderDrawLine(renderer, player.rec.x + 16, player.rec.y + 16, shared -> visibleMap[i].x, shared -> visibleMap[i].y);
         }
     }
     else
     {
-        for (int i = 0; i < visible_map_index; i++)
+        for (int i = 0; i < shared -> visible_map_index; i++)
         {
-            SDL_RenderDrawLine(renderer, player.rec.x + 64, player.rec.y + 64, visibleMap[i].x, visibleMap[i].y);
+            SDL_RenderDrawLine(renderer, player.rec.x + 64, player.rec.y + 64, shared -> visibleMap[i].x, shared -> visibleMap[i].y);
         }
     }
 
-    for (int i = 0; i < visible_map_index; i++)
+    for (int i = 0; i < shared -> visible_map_index; i++)
     {
-        fill_circle(visibleMap[i].x, visibleMap[i].y, 5, 0x00, 0xFF, 0x00, 0xFF);
+        fill_circle(shared -> visibleMap[i].x, shared -> visibleMap[i].y, 5, 0x00, 0xFF, 0x00, 0xFF);
     }
 }
 
 
-void VisibleTriangles()
+void VisibleTriangles(t_vertexs * shared)
 {
-    // fprintf(file_ptr, "%i\n", visible_map_index);
+    // fprintf(file_ptr, "%i\n", shared -> visible_map_index);
     if (player.skin == 1)
     {
-        for (int i = 0; i < visible_map_index -1 ; i++)
+        for (int i = 0; i < shared -> visible_map_index -1 ; i++)
         {
-            fill_triangle(player.rec.x + 16, player.rec.y + 16, visibleMap[i + 0].x, visibleMap[i + 0].y, visibleMap[i + 1].x, visibleMap[i + 1].y, 0xFF, 0xFF, 0xFF, 0xA0);     
+            fill_triangle(player.rec.x + 16, player.rec.y + 16, shared -> visibleMap[i + 0].x, shared -> visibleMap[i + 0].y, shared -> visibleMap[i + 1].x, shared -> visibleMap[i + 1].y, 0xFF, 0xFF, 0xFF, 0xA0);     
         }
-        fill_triangle(player.rec.x + 16, player.rec.y + 16, visibleMap[visible_map_index - 1].x, visibleMap[visible_map_index - 1].y, visibleMap[0].x, visibleMap[0].y, 0xFF, 0xFF, 0xFF, 0xA0);
+        fill_triangle(player.rec.x + 16, player.rec.y + 16, shared -> visibleMap[shared -> visible_map_index - 1].x, shared -> visibleMap[shared -> visible_map_index - 1].y, shared -> visibleMap[0].x, shared -> visibleMap[0].y, 0xFF, 0xFF, 0xFF, 0xA0);
 
         SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-        SDL_RenderDrawLine(renderer, player.rec.x + 16, player.rec.y + 16, visibleMap[0].x, visibleMap[0].y);
-        SDL_RenderDrawLine(renderer, player.rec.x + 16, player.rec.y + 16, visibleMap[visible_map_index - 1].x, visibleMap[visible_map_index - 1].y);
+        SDL_RenderDrawLine(renderer, player.rec.x + 16, player.rec.y + 16, shared -> visibleMap[0].x, shared -> visibleMap[0].y);
+        SDL_RenderDrawLine(renderer, player.rec.x + 16, player.rec.y + 16, shared -> visibleMap[shared -> visible_map_index - 1].x, shared -> visibleMap[shared -> visible_map_index - 1].y);
     }
     else
     {       
-        for (int i = 0; i < visible_map_index -1 ; i++)
+        for (int i = 0; i < shared -> visible_map_index -1 ; i++)
         {
-            fill_triangle(player.rec.x + 64, player.rec.y + 64, visibleMap[i + 0].x, visibleMap[i + 0].y, visibleMap[i + 1].x, visibleMap[i + 1].y, 0xFF, 0xFF, 0xFF, 0xA0);     
+            fill_triangle(player.rec.x + 64, player.rec.y + 64, shared -> visibleMap[i + 0].x, shared -> visibleMap[i + 0].y, shared -> visibleMap[i + 1].x, shared -> visibleMap[i + 1].y, 0xFF, 0xFF, 0xFF, 0xA0);     
         }
-        fill_triangle(player.rec.x + 64, player.rec.y + 64, visibleMap[visible_map_index - 1].x, visibleMap[visible_map_index - 1].y, visibleMap[0].x, visibleMap[0].y, 0xFF, 0xFF, 0xFF, 0xA0);
+        fill_triangle(player.rec.x + 64, player.rec.y + 64, shared -> visibleMap[shared -> visible_map_index - 1].x, shared -> visibleMap[shared -> visible_map_index - 1].y, shared -> visibleMap[0].x, shared -> visibleMap[0].y, 0xFF, 0xFF, 0xFF, 0xA0);
 
         SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-        SDL_RenderDrawLine(renderer, player.rec.x + 64, player.rec.y + 64, visibleMap[0].x, visibleMap[0].y);
-        SDL_RenderDrawLine(renderer, player.rec.x + 64, player.rec.y + 64, visibleMap[visible_map_index - 1].x, visibleMap[visible_map_index - 1].y);
+        SDL_RenderDrawLine(renderer, player.rec.x + 64, player.rec.y + 64, shared -> visibleMap[0].x, shared -> visibleMap[0].y);
+        SDL_RenderDrawLine(renderer, player.rec.x + 64, player.rec.y + 64, shared -> visibleMap[shared -> visible_map_index - 1].x, shared -> visibleMap[shared -> visible_map_index - 1].y);
     }
 }
 
@@ -414,41 +417,41 @@ void TriagnleTexture(SDL_Texture* triangle_texture)
     triangle_texture = LoadTexture("tex/player/light.png");
 }
 
-void PrepareTriangles()
+void PrepareTriangles(t_vertexs * shared)
 {
     int j = 0;
 
-    for (int i = 0; i < visible_map_index; i++)
+    for (int i = 0; i < shared -> visible_map_index; i++)
     {
-        vertex[j].position.x = (int) player.rec.x + 16;
-        vertex[j].position.y = (int) player.rec.y + 16;
-        vertex[j].color.r = 255;
-        vertex[j].color.g = 255;
-        vertex[j].color.b = 255;
-        vertex[j].color.a = 30;
+        shared -> vertex[j].position.x = (int) player.rec.x + 16;
+        shared -> vertex[j].position.y = (int) player.rec.y + 16;
+        shared -> vertex[j].color.r = 255;
+        shared -> vertex[j].color.g = 255;
+        shared -> vertex[j].color.b = 255;
+        shared -> vertex[j].color.a = 30;
         j++;
 
-        vertex[j].position.x = (int) visibleMap[i + 0].x;
-        vertex[j].position.y = (int) visibleMap[i + 0].y;
-        vertex[j].color.r = 255;
-        vertex[j].color.g = 255;
-        vertex[j].color.b = 255;
-        vertex[j].color.a = 20;
+        shared -> vertex[j].position.x = (int) shared -> visibleMap[i + 0].x;
+        shared -> vertex[j].position.y = (int) shared -> visibleMap[i + 0].y;
+        shared -> vertex[j].color.r = 255;
+        shared -> vertex[j].color.g = 255;
+        shared -> vertex[j].color.b = 255;
+        shared -> vertex[j].color.a = 20;
         j++;
 
-        vertex[j].position.x = (int) visibleMap[(i + 1) % visible_map_index].x;
-        vertex[j].position.y = (int) visibleMap[(i + 1) % visible_map_index].y;   
-        vertex[j].color.r = 255;
-        vertex[j].color.g = 255;
-        vertex[j].color.b = 255;
-        vertex[j].color.a = 20;
+        shared -> vertex[j].position.x = (int) shared -> visibleMap[(i + 1) % shared -> visible_map_index].x;
+        shared -> vertex[j].position.y = (int) shared -> visibleMap[(i + 1) % shared -> visible_map_index].y;   
+        shared -> vertex[j].color.r = 255;
+        shared -> vertex[j].color.g = 255;
+        shared -> vertex[j].color.b = 255;
+        shared -> vertex[j].color.a = 20;
         j++;         
     }
-    vertex_index = j;
+    shared -> vertex_index = j;
 }
 
 
-void DrawAll(float secondsElapsed, bool KEYS[322])
+void DrawAll(float secondsElapsed, bool KEYS[322], t_vertexs * shared)
 {
     if (player.health != 0)
     {
@@ -461,9 +464,9 @@ void DrawAll(float secondsElapsed, bool KEYS[322])
         DrawMap();                          // map 
         DrawCreatures();                    // creatures
 
-        if (KEYS[SDLK_1]) DrawBlocks();     // draw all blocks          (blue)
-        if (KEYS[SDLK_2]) DrawEdges();      // draw all edges           (red)
-        if (KEYS[SDLK_3]) VisibleEdges();   // draw all visible lines   (green)
+        if (KEYS[SDLK_1]) DrawBlocks(shared);     // draw all blocks          (blue)
+        if (KEYS[SDLK_2]) DrawEdges(shared);      // draw all edges           (red)
+        if (KEYS[SDLK_3]) VisibleEdges(shared);   // draw all visible lines   (green)
          
         if (player.skin == 2) ChangePlayerPicture(player);
 
@@ -472,9 +475,9 @@ void DrawAll(float secondsElapsed, bool KEYS[322])
         if (KEYS[SDLK_6])
         {
             TriagnleTexture(triangle_texture);
-            PrepareTriangles();
+            PrepareTriangles(shared);
             DrawDark();
-            SDL_RenderGeometry(renderer, triangle_texture, vertex, vertex_index, NULL, 0);
+            SDL_RenderGeometry(renderer, triangle_texture, shared -> vertex, shared -> vertex_index, NULL, 0);
         }
         if (KEYS[SDLK_7]) 
         {

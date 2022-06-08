@@ -28,7 +28,7 @@ void updateMap()
 }
 
 // colison detection
-bool AABB(float x, float y, int number)
+bool AABB(float x, float y, int number, t_vertexs * shared)
 {	
 	int row, collumn;
 	bool can = false;
@@ -38,7 +38,7 @@ bool AABB(float x, float y, int number)
 	row = y / 32;
 	collumn = x / 32;
 
-	if (map[row][collumn] == 2) DoorMap();
+	if (map[row][collumn] == 2) DoorMap(shared);
 	
 	if (map[row][collumn] != 3)
 	{
@@ -62,7 +62,7 @@ bool AABB(float x, float y, int number)
 }
 
 
-void updatePhysic()
+void updatePhysic(t_vertexs * shared)
 {
 	float new_x = player.rec.x + (player.velocity_x * player.speed);
 	float new_y = player.rec.y + (player.velocity_y * player.speed);
@@ -70,7 +70,7 @@ void updatePhysic()
 	if (player.velocity_x > 0) new_x += 32;
 	if (player.velocity_y > 0) new_y += 32;
 
-	if (AABB(new_x, new_y, ENEMY_NUMBER))
+	if (AABB(new_x, new_y, ENEMY_NUMBER, shared))
 	{
 		if (player.velocity_x != 0 && player.velocity_y != 0)
 		{
@@ -92,7 +92,7 @@ void updatePhysic()
 
 
 
-bool enemySee(struct Creature * creature)
+bool enemySee(struct Creature * creature, t_vertexs * shared)
 {
 	bool valid = false;
 
@@ -133,9 +133,9 @@ bool enemySee(struct Creature * creature)
 	rdx = player.rec.x - creature -> rec.x;
 	rdy = player.rec.y - creature -> rec.y;
 
-	for (int i = 0; i < edge_map_index; i++)
+	for (int i = 0; i < shared -> edge_map_index; i++)
 	{
-	    Edge e1 = edgeMap[i];
+	    Edge e1 = shared -> edgeMap[i];
 	    float sdx = e1.end_x - e1.start_x;
 	    float sdy = e1.end_y - e1.start_y;
 
@@ -173,13 +173,13 @@ bool enemySee(struct Creature * creature)
 }
 
 
-void AI()
+void AI(t_vertexs * shared)
 {
     for (int i = 0; i < ENEMY_NUMBER; i++)
     {
         if (enemies[i].health != 0)
         {
-            enemySee(&enemies[i]);
+            enemySee(&enemies[i], shared);
 
             if (enemies[i].vidim == true)
             {
@@ -198,7 +198,7 @@ void AI()
                 if (enemies[i].velocity_x > 0) new_x += 32;
                 if (enemies[i].velocity_y > 0) new_y += 32;
 
-                if (AABB(new_x, new_y, i))
+                if (AABB(new_x, new_y, i, shared))
                 {
                     if (enemies[i].velocity_x != 0 && enemies[i].velocity_y != 0)
                     {
@@ -211,14 +211,12 @@ void AI()
                         enemies[i].rec.y += (float) enemies[i].velocity_y * enemies[i].speed;
                     }   
                 }
-
                 if (EnemyAttack(&enemies[i]))
                 {
                 	DeathScreen();
                 }
             }
         }
-
         else 
         {
             enemies[i].rec.x = 0;
