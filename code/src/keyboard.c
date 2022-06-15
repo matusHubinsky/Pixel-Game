@@ -1,6 +1,5 @@
 
 #include "battle.h"
-#include "main.h"
 #include "init.h"
 #include "map.h"
 #include "physic.h"
@@ -8,8 +7,7 @@
 #include "textures.h"
 
 
-
-void keyboard_input(SDL_Event event, bool KEYS[322], t_vertexs * shared)
+void keyboard_input(SDL_Event event, bool KEYS[322], t_vertexs * shared, lvl * Cmap)
 {
     if (event.type == SDL_KEYDOWN)
     {
@@ -20,17 +18,21 @@ void keyboard_input(SDL_Event event, bool KEYS[322], t_vertexs * shared)
             //-------------------------------------------------------------
             case SDLK_a:
                 player.velocity_x = -1;
+                player.velocity_y = 0;
                 break;
     
             case SDLK_d:
                 player.velocity_x = 1;
+                player.velocity_y = 0;
                 break;
 
             case SDLK_w:
+                player.velocity_x = 0;
                 player.velocity_y = -1;
                 break;
 
              case SDLK_s:
+                player.velocity_x = 0;
                 player.velocity_y = 1;
                 break;
             //-------------------------------------------------------------
@@ -74,7 +76,7 @@ void keyboard_input(SDL_Event event, bool KEYS[322], t_vertexs * shared)
                 if (player.health == 0)
                 {
                     player.health = 10;
-                    InitReborn(shared);
+                    InitReborn(shared, Cmap);
                 }
                 break;
 

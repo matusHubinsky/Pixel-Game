@@ -3,12 +3,9 @@
 
 #include "main.h"
 
-// void setBlendMode( SDL_BlendMode blending );
-// void setAlpha( Uint8 a );
 int min(int a, int b, int c);
 int max(int a, int b, int c);
 float cross_produce(int v1[2], int v2[2]);
-// int * Interpolate(int i0, int d0, int i1, int d1, int* values);
 void draw_line(int sx, int sy, int ex, int ey, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 void draw_circle(int cx, int cy, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 void fill_rectangle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a);

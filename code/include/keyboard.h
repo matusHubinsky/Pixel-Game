@@ -3,6 +3,6 @@
 
 #include "main.h"
 
-void keyboard_input(SDL_Event event, bool KEYS[322], t_vertexs * shared);
+void keyboard_input(SDL_Event event, bool KEYS[322], t_vertexs * shared, lvl * Cmap);
 
 #endif

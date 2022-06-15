@@ -1,12 +1,7 @@
 #include "map.h"
 #include "textures.h"
 #include "light.h"
-#include "world.h"
 #include "const.h"
-
-#include <stdlib.h>
-#include <string.h>
-
 
 int lvlN = 0;
 

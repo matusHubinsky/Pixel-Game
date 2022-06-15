@@ -4,22 +4,30 @@
 #include "map.h"
 #include "battle.h"
 
-void updateMap()
+void updateMap(lvl * Cmap)
 {
 	int row, collumn;
 	
-	for (int i = 0; i < ENEMY_NUMBER; i++)
+	for (int i = 0; i < MAP_WIDTH; i++)
 	{
-		row = enemies[i].rec.y / 32;
-		collumn = enemies[i].rec.x / 32;
-
-		Cmap[row][collumn] = 1;
+		for (int j = 0; j < MAP_HEIGTH; j++)
+		{
+			*Cmap[j][i] = 0;
+		}
 	}
 
-	row = player.rec.y / 32;
-	collumn = player.rec.x / 32;
+	for (int i = 0; i < ENEMY_NUMBER; i++)
+	{
+		row = enemies[i].rec.y / BLOCK;
+		collumn = enemies[i].rec.x / BLOCK;
 
-	Cmap[row][collumn] = 1;
+		*Cmap[row][collumn] = 1;
+	}
+
+	row = player.rec.y / BLOCK;
+	collumn = player.rec.x / BLOCK;
+
+	*Cmap[row][collumn] = 1;
 }
 
 // colison detection
@@ -27,11 +35,8 @@ bool AABB(float x, float y, int number, t_vertexs * shared)
 {	
 	int row, collumn;
 	bool can = false;
-	// updateMap();
-	// printf("%i %i\n", player.rec.x, player.rec.y);
-	// pridat podmienky na cele telo
-	row = y / 32;
-	collumn = x / 32;
+	row = y / BLOCK;
+	collumn = x / BLOCK;
 
 	if (map[row][collumn] == 2) DoorMap(shared);
 	
@@ -41,12 +46,12 @@ bool AABB(float x, float y, int number, t_vertexs * shared)
 		{
 			if (number != i)	// cheking enemies
 			{
-				if ((x >= enemies[i].rec.x) && (x <= enemies[i].rec.x + 32) && (y >= enemies[i].rec.y) && (y <= enemies[i].rec.y + 32)) return can;
+				if ((x >= enemies[i].rec.x) && (x <= enemies[i].rec.x + BLOCK) && (y >= enemies[i].rec.y) && (y <= enemies[i].rec.y + BLOCK)) return can;
 			}
 	
 			if (number != ENEMY_NUMBER)	  // checking player
 			{
-				if ((x >= player.rec.x) && (x <= player.rec.x + 32) && (y >= player.rec.y) && (y <= player.rec.y + 32)) return can;			
+				if ((x >= player.rec.x) && (x <= player.rec.x + BLOCK) && (y >= player.rec.y) && (y <= player.rec.y + BLOCK)) return can;			
 			}
 		}
 
@@ -62,21 +67,13 @@ void updatePhysic(t_vertexs * shared)
 	float new_x = player.rec.x + (player.velocity_x * player.speed);
 	float new_y = player.rec.y + (player.velocity_y * player.speed);
 
-	if (player.velocity_x > 0) new_x += 32;
-	if (player.velocity_y > 0) new_y += 32;
+	if (player.velocity_x > 0) new_x += BLOCK;
+	if (player.velocity_y > 0) new_y += BLOCK;
 
 	if (AABB(new_x, new_y, ENEMY_NUMBER, shared))
 	{
-		if (player.velocity_x != 0 && player.velocity_y != 0)
-		{
-			player.rec.x += (float) (player.velocity_x * player.speed) / 1.5;
-			player.rec.y += (float) (player.velocity_y * player.speed) / 1.5;
-		}
-		else
-		{
-			player.rec.x += (float) player.velocity_x * player.speed;
-			player.rec.y += (float) player.velocity_y * player.speed;
-		}
+		player.rec.x += (float) player.velocity_x * player.speed;
+		player.rec.y += (float) player.velocity_y * player.speed;
 	}
 
 	if (PlayerDeath())
@@ -86,16 +83,15 @@ void updatePhysic(t_vertexs * shared)
 }
 
 
-
 bool enemySee(struct Creature * creature, t_vertexs * shared)
 {
 	bool valid = false;
 
-	creature -> rec.x += 16;
-	creature -> rec.y += 16;
+	creature -> rec.x += BLOCK / 2;
+	creature -> rec.y += BLOCK / 2;
 
-	player.rec.x += 16;
-	player.rec.y += 16;
+	player.rec.x += BLOCK / 2;
+	player.rec.y += BLOCK / 2;
 
 	float rdx = player.rec.x - creature -> rec.x;
 	float rdy = player.rec.y - creature -> rec.y;
@@ -158,11 +154,11 @@ bool enemySee(struct Creature * creature, t_vertexs * shared)
     	creature -> sight.x = min_x;
     	creature -> sight.y = min_y;
     }
-	creature -> rec.x -= 16;
-	creature -> rec.y -= 16;
+	creature -> rec.x -= BLOCK / 2;
+	creature -> rec.y -= BLOCK / 2;
 
-	player.rec.x -= 16;
-	player.rec.y -= 16;
+	player.rec.x -= BLOCK / 2;
+	player.rec.y -= BLOCK / 2;
 
 	return valid;
 }
@@ -178,27 +174,38 @@ void AI(t_vertexs * shared)
 
             if (enemies[i].vidim == true)
             {
-                if (player.rec.x > enemies[i].rec.x) enemies[i].velocity_x = 1;
-                if (player.rec.x < enemies[i].rec.x) enemies[i].velocity_x = -1;
-                if (player.rec.y > enemies[i].rec.y) enemies[i].velocity_y = 1;
-                if (player.rec.y < enemies[i].rec.y) enemies[i].velocity_y = -1;
+                if (player.rec.x > enemies[i].rec.x)
+                {
+                	enemies[i].velocity_x = 1;	
+                } 
+                if (player.rec.x < enemies[i].rec.x)
+                {
+                	enemies[i].velocity_x = -1;	
+                } 
+                if (player.rec.y > enemies[i].rec.y)
+                {
+                	enemies[i].velocity_y = 1;	
+                } 
+                if (player.rec.y < enemies[i].rec.y) 
+                {
+                	enemies[i].velocity_y = -1;
+                }
 
                 if (player.rec.x == enemies[i].rec.x) enemies[i].velocity_x = 0;
                 if (player.rec.y == enemies[i].rec.y) enemies[i].velocity_y = 0;
 
-
                 float new_x = enemies[i].rec.x + (enemies[i].velocity_x * enemies[i].speed);
                 float new_y = enemies[i].rec.y + (enemies[i].velocity_y * enemies[i].speed);
 
-                if (enemies[i].velocity_x > 0) new_x += 32;
-                if (enemies[i].velocity_y > 0) new_y += 32;
+                if (enemies[i].velocity_x > 0) new_x += BLOCK;
+                if (enemies[i].velocity_y > 0) new_y += BLOCK;
 
                 if (AABB(new_x, new_y, i, shared))
                 {
                     if (enemies[i].velocity_x != 0 && enemies[i].velocity_y != 0)
                     {
-                        enemies[i].rec.x += (float) (enemies[i].velocity_x * enemies[i].speed) / 1.5;
-                        enemies[i].rec.y += (float) (enemies[i].velocity_y * enemies[i].speed) / 1.5;
+                        enemies[i].rec.x += (float) (enemies[i].velocity_x * enemies[i].speed) / 1.4142;
+                        enemies[i].rec.y += (float) (enemies[i].velocity_y * enemies[i].speed) / 1.4142;
                     }
                     else
                     {

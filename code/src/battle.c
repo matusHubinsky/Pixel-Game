@@ -1,9 +1,5 @@
-#include "main.h"
-#include "battle.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
+#include "battle.h"
 
 
 void PlayerAttack(struct Creature * creature, bool up, bool down, bool left, bool right)

@@ -4,42 +4,51 @@
 #include "textures.h"
 #include "map.h"
 #include "light.h"
-#include "world.h"
-#include "vector.h"
 #include "physic.h"
 
-    
-lvl Cmap;
 
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 SDL_Texture* texture = NULL;
 
+// TODO:
+// zdielanie character mao
+
 struct Creature player;
 struct Creature enemies [ENEMY_NUMBER];
 
-t_vertexs shared;
-
-
 int main(int argc, char* args[])
 {
+    t_vertexs shared;
+
     bool KEYS[322];
 	if(!InitWorld(KEYS))
 	{
         fprintf(stderr, "Failed to initialize!\n");
         exit(1);
 	}
-
+    else printf("InitWorld passed.\n");
+    
+    // charecter map
+    lvl Cmap;
     SDL_Event e;
     int frameTime = 0;            
     float secondsElapsed = 60.0f;
     long long int frameStart;    
-    int start = 0; int end = 0; int i = 0;
+    int start = 0; 
+    int end = 0; 
+    int i = 0;
     float sum = 0.0f;
 
-    InitPlayer();
+    InitPlayer(&Cmap);
+    printf("InitPlayer passed.\n");
+
     WorldMap();
+    printf("WorldMap passed.\n");
+
     RewriteMap(map, world[lvlN], &shared);
+    printf("RewriteWorld passed.\n");
+
     CreateMap();
 
     while (true)
@@ -56,7 +65,7 @@ int main(int argc, char* args[])
         {
             if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
             {
-                keyboard_input(e, KEYS, &shared);
+                keyboard_input(e, KEYS, &shared, &Cmap);
             }
             else
             {

@@ -1,9 +1,5 @@
-#include "world.h"
+
 #include "main.h"
-
-#include <stdlib.h>
-#include <string.h>
-
 
 // lvl world[4][4] = {{ {}, {}, {}, {} }}, {{  }}
 

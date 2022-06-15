@@ -12,17 +12,11 @@
 
 #include "const.h"
 
-// indexs;
-extern int poly_map_index;
-extern int edge_map_index;
-extern int visible_map_index; 
-
 extern int lvlN;
 
 typedef int lvl[30][40];			
 extern lvl world[4];	
 extern lvl map; 
-extern lvl Cmap;
 
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;

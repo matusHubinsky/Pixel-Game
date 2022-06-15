@@ -1,6 +1,6 @@
 EXEC = ./pixelgame
 CC = gcc
-CFLAGS = -std=c11 -m64 -O3 -g -Wall -I 
+CFLAGS = -std=c11 -m64 -O3 -g -Wall -I
 LDLIBS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lm
 GAME = /home/leviathan/Documents/VUT/git/PixelGame/game/pixelgame
 

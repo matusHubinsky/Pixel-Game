@@ -1,14 +1,9 @@
-#include "init.h"
+
 #include "keyboard.h"
 #include "textures.h"
 #include "map.h"
 #include "light.h"
-#include "world.h"
-#include "vector.h"
 #include "physic.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
 
 
 bool InitWorld(bool KEYS[322])
@@ -67,7 +62,7 @@ bool InitWorld(bool KEYS[322])
 }
 
 
-void InitPlayer()
+void InitPlayer(lvl * Cmap)
 {
     // choose skin
     player.skin = 1;
@@ -134,26 +129,18 @@ void InitPlayer()
         enemies[i].health = 10;
         enemies[i].tex = LoadTexture("tex/player/void.png");
     }
-
-    for (int i = 0; i < 30; i++) 
-    {
-        for (int j = 0; j < 40; j++)
-        {
-            Cmap[i][j] = 0;
-        }
-    }
 }
 
 
-
-void InitReborn(t_vertexs * shared)
+void InitReborn(t_vertexs * shared, lvl * Cmap)
 {
-    InitPlayer();
+    InitPlayer(Cmap);
 
     WorldMap();
     RewriteMap(map, world[0], shared);
     CreateMap();
 }
+
 
 void ToggleFullscreen(SDL_Window* Window) {
     Uint32 FullscreenFlag = SDL_WINDOW_FULLSCREEN;
@@ -161,6 +148,7 @@ void ToggleFullscreen(SDL_Window* Window) {
     SDL_SetWindowFullscreen(Window, IsFullscreen ? 0 : FullscreenFlag);
     SDL_ShowCursor(IsFullscreen);
 }
+
 
 void CloseInit()
 {       

@@ -1,11 +1,10 @@
-#include "textures.h"
-#include "light.h"
 
-#include <stdio.h>
+#include "light.h"
+#include "textures.h"
 
 #define PI 3.14159265
 
-_Bool up, down, left, right = false;
+bool up, down, left, right = false;
 
 int number = 2;
 SDL_Texture* triangle_texture;
