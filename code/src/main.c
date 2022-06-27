@@ -32,23 +32,13 @@ int main(int argc, char* args[])
     // charecter map
     lvl Cmap;
     SDL_Event e;
-    int frameTime = 0;            
-    float secondsElapsed = 60.0f;
     long long int frameStart;    
-    int start = 0; 
-    int end = 0; 
-    int i = 0;
-    float sum = 0.0f;
+    int start = 0, end = 0, i = 0, frameTime = 0;;
+    float secondsElapsed = 60.0f, sum = 0.0f;
 
     InitPlayer(&Cmap);
-    printf("InitPlayer passed.\n");
-
     WorldMap();
-    printf("WorldMap passed.\n");
-
     RewriteMap(map, world[lvlN], &shared);
-    printf("RewriteWorld passed.\n");
-
     CreateMap();
 
     while (true)
@@ -93,4 +83,3 @@ int main(int argc, char* args[])
 	CloseInit();
 	return 0;
 }
-
