@@ -11,7 +11,6 @@ void Merge(t_vertexs * shared)
     Vedge points[shared -> visible_map_index];
 
     // This shouldn't work
-
     for (int i = 0; i < shared -> visible_map_index - 1; i++)
     {
         if ((fabs(shared -> visibleMap[i].x - shared -> visibleMap[i + 1].x)) > mistake) 
@@ -19,13 +18,14 @@ void Merge(t_vertexs * shared)
             points[k] = shared -> visibleMap[i];
             k++;
         }
-        else if ((fabs(shared -> visibleMap[i].y - shared -> visibleMap[i + 1].y)) > mistake)
+        if ((fabs(shared -> visibleMap[i].y - shared -> visibleMap[i + 1].y)) > mistake)
         {
             points[k] = shared -> visibleMap[i];
             k++;
         }
     }
     
+    // reload new information;
     for (int i = 0; i < k; i++)
     {
         shared -> visibleMap[i] = points[i];

@@ -12,8 +12,8 @@ OBJS = $(patsubst %.c,%.o,$(SRCS))
 # -pthread
 
 all:
-	$(CC) -c src/*.c $(CFLAGS) include && gcc *.o -o $(GAME) $(LDLIBS) 
-	$(CC) -c src/*.c $(CFLAGS) include && gcc *.o -o ./pixelgame $(LDLIBS) && $(EXEC)
+	$(CC) -c src/*.c $(CFLAGS) include && $(CC) *.o -o $(GAME) $(LDLIBS) 
+	$(CC) -c src/*.c $(CFLAGS) include && $(CC) *.o -o ./pixelgame $(LDLIBS) && $(EXEC)
 
 pixelgame: src/*.c include/*.h
 	$(CC) $(CFLAGS) $< -c -o $@ 

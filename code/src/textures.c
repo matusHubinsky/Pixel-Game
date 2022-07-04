@@ -34,20 +34,8 @@ float cross_produce(int v1[2], int v2[2])
     return result;   
 }
 
-void draw_circle(int cx, int cy, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-{
-    SDL_SetRenderDrawColor(renderer, r, g, b, a);
-    for (double dy = 1; dy <= radius; dy += 1.1)
-    {
-       double dx = floor(sqrt((2.0 * radius * dy) - (dy * dy)));
-       SDL_RenderDrawPoint(renderer, cx + dx, cy - dy + radius);
-       SDL_RenderDrawPoint(renderer, cx - dx, cy - dy + radius);
-       SDL_RenderDrawPoint(renderer, cx + dx, cy + dy - radius);
-       SDL_RenderDrawPoint(renderer, cx - dx, cy + dy - radius);
-   }
-}
 
-
+// OLD FUNC
 void fill_rectangle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -60,7 +48,8 @@ void fill_rectangle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	}
 }
 
-
+// calculate all the poinst and draw circle
+// not sure wtich method I am using
 void fill_circle(int cx, int cy, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
 	for (double dy = 1; dy <= radius; dy += 1.1)
@@ -73,6 +62,8 @@ void fill_circle(int cx, int cy, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 }
 
 
+// OLD FUNC
+// fill triangle, not sure which method I am using
 void fill_triangle(int x0, int y0, int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
     int max_x = max(x0, x1, x2);
@@ -104,6 +95,7 @@ void fill_triangle(int x0, int y0, int x1, int y1, int x2, int y2, Uint8 r, Uint
 }
 
 
+// just draw whole map
 void DrawMap()
 {
     int length = sizeof(mapTex)/sizeof(mapTex[0]);
@@ -114,11 +106,15 @@ void DrawMap()
 }
 
 
+// draw all player, his attack animation and all the enemies
 void DrawCreatures()
 {
+    // draw player
 	SDL_RenderCopy(renderer, player.tex, &player.src, &player.rec);
+    // his attack animation
     AttackAnimation(player.a_up, player.a_down, player.a_left, player.a_right);
 
+    // draw all the enemies
     for (int i = 0; i < ENEMY_NUMBER; i++)
     {
         if (enemies[i].health != 0 && enemies[i].vidim) 
@@ -129,6 +125,7 @@ void DrawCreatures()
 }
 
 
+// draw red edges of the objects
 void DrawEdges(t_vertexs * shared)
 {
     for (int i = 0; i < shared -> edge_map_index; i++)
@@ -141,6 +138,7 @@ void DrawEdges(t_vertexs * shared)
 }
 
 
+// draw blue blocks of the objects
 void DrawBlocks(t_vertexs * shared)
 {
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
@@ -151,11 +149,14 @@ void DrawBlocks(t_vertexs * shared)
             if (shared -> poly_map[y*40 + x].exist) 
             {
                 fill_rectangle(x * BLOCK, y * BLOCK, BLOCK, 0xFF, 0x00, 0x00, 0x55);
+                // SDL_RenderFillRect(renderer, &box);
             }
         }
     }
 }
 
+
+// draw "dark" texture at whole map
 void DrawDark()
 {
     SDL_Rect rect;
@@ -170,6 +171,7 @@ void DrawDark()
 }
 
 
+// Draw all green visible edges
 void VisibleEdges(t_vertexs * shared)
 {
     SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
@@ -197,6 +199,8 @@ void VisibleEdges(t_vertexs * shared)
 }
 
 
+// OLD FUNC 
+// draw till visible triangles
 void VisibleTriangles(t_vertexs * shared)
 {
     // fprintf(file_ptr, "%i\n", shared -> visible_map_index);
@@ -227,6 +231,7 @@ void VisibleTriangles(t_vertexs * shared)
 }
 
 
+// change player texture is player is moving in new direction
 void ChangePlayerPicture(Creature player)
 {
     if (player.velocity_x < 0 && left == false)
@@ -267,6 +272,7 @@ void ChangePlayerPicture(Creature player)
 }
 
 
+// draw lines of sight from enemies to player
 void enemySight()
 {
     for (int i = 0; i < ENEMY_NUMBER; i++)
@@ -291,6 +297,7 @@ void enemySight()
 }
 
 
+// draw death screen, trigers only when player dies
 void DeathScreen()
 {
     if (player.health == 0)
@@ -318,6 +325,7 @@ void DeathScreen()
 }
 
 
+// drawing half circle in font of the player
 void AttackAnimation(bool up, bool down, bool left, bool right)
 {
     SDL_Rect Rec;
@@ -366,6 +374,7 @@ void AttackAnimation(bool up, bool down, bool left, bool right)
 }
 
 
+// drawing FPS in top right corner
 void DrawFPS(float secondsElapsed)
 {
     //this opens a font style and sets a size
@@ -392,7 +401,7 @@ void DrawFPS(float secondsElapsed)
 }
 
 
-
+// basic SDL texture function
 SDL_Texture* LoadTexture(const char* path)
 {
     SDL_Surface* loadedSurface = IMG_Load(path);
@@ -403,6 +412,7 @@ SDL_Texture* LoadTexture(const char* path)
 };
 
 
+// I was trying to draw all triangles as cuts of texture....not sure if I can do it in SDL 
 void TriagnleTexture(SDL_Texture* triangle_texture)
 {
     /*
@@ -416,6 +426,8 @@ void TriagnleTexture(SDL_Texture* triangle_texture)
     triangle_texture = LoadTexture("tex/player/light.png");
 }
 
+
+// set all riangles 
 void PrepareTriangles(t_vertexs * shared)
 {
     int j = 0;
@@ -424,24 +436,24 @@ void PrepareTriangles(t_vertexs * shared)
     {
         shared -> vertex[j].position.x = (int) player.rec.x + 16;
         shared -> vertex[j].position.y = (int) player.rec.y + 16;
-        shared -> vertex[j].color.r = 255;
-        shared -> vertex[j].color.g = 200;
+        shared -> vertex[j].color.r = 225;
+        shared -> vertex[j].color.g = 160;
         shared -> vertex[j].color.b = 255;
         shared -> vertex[j].color.a = 25;
         j++;
 
         shared -> vertex[j].position.x = (int) shared -> visibleMap[i + 0].x;
         shared -> vertex[j].position.y = (int) shared -> visibleMap[i + 0].y;
-        shared -> vertex[j].color.r = 255;
-        shared -> vertex[j].color.g = 200;
+        shared -> vertex[j].color.r = 225;
+        shared -> vertex[j].color.g = 160;
         shared -> vertex[j].color.b = 255;
         shared -> vertex[j].color.a = 25;
         j++;
 
         shared -> vertex[j].position.x = (int) shared -> visibleMap[(i + 1) % shared -> visible_map_index].x;
         shared -> vertex[j].position.y = (int) shared -> visibleMap[(i + 1) % shared -> visible_map_index].y;   
-        shared -> vertex[j].color.r = 255;
-        shared -> vertex[j].color.g = 200;
+        shared -> vertex[j].color.r = 225;
+        shared -> vertex[j].color.g = 160;
         shared -> vertex[j].color.b = 255;
         shared -> vertex[j].color.a = 25;
         j++;         
@@ -468,16 +480,20 @@ void DrawAll(float secondsElapsed, bool KEYS[322], t_vertexs * shared)
          
         if (player.skin == 2) ChangePlayerPicture(player);
 
+        // SIGHT
         if (KEYS[SDLK_4]) enemySight();     // draw enemy lines of sight
         if (KEYS[SDLK_5]) DrawFPS(secondsElapsed);
+        
+        // render info
         if (KEYS[SDLK_7]) 
         {
             getRenderInfo();
             KEYS[SDLK_7] = false;
         }
 
+        // Draw dark texture
         DrawDark();
-        DrawCreatures();                    // creatures
+        DrawCreatures();                    
 
         if (KEYS[SDLK_6])
         {
@@ -491,7 +507,7 @@ void DrawAll(float secondsElapsed, bool KEYS[322], t_vertexs * shared)
     }
 }
 
-
+// Save all information about curent renderer into file .../txt/info.txt
 void getRenderInfo()
 {
     FILE * file_ptr;

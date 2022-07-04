@@ -1,7 +1,7 @@
 
 #include "battle.h"
 
-
+// Deal damage to all the enemies that are near player
 void PlayerAttack(struct Creature * creature, bool up, bool down, bool left, bool right)
 {
 	int hit = false;
@@ -10,26 +10,29 @@ void PlayerAttack(struct Creature * creature, bool up, bool down, bool left, boo
 
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
-
-		if (up == true && (((enemies[i].rec.y - creature -> rec.y) < 0) && (enemies[i].rec.y - creature -> rec.y) > -distance))
+		if (up == true && (((enemies[i].rec.y - creature -> rec.y) < 0) && \
+		 (enemies[i].rec.y - creature -> rec.y) > -distance))
 		{
 			hit = true;
 			k = i;
 			break;
 		}
-		else if (down == true && (((enemies[i].rec.y - creature -> rec.y) < distance) && (enemies[i].rec.y - creature -> rec.y) > 0)) 
+		if (down == true && (((enemies[i].rec.y - creature -> rec.y) < distance) && \
+			(enemies[i].rec.y - creature -> rec.y) > 0)) 
 		{
 			hit = true;
 			k = i;
 			break;
 		}
-		else if (left == true && (((enemies[i].rec.x - creature -> rec.x) < 0) && (enemies[i].rec.x - creature -> rec.x) > -distance))
+		if (left == true && (((enemies[i].rec.x - creature -> rec.x) < 0) && \
+			(enemies[i].rec.x - creature -> rec.x) > -distance))
 		{
 			hit = true;
 			k = i;
 			break;
 		}
-		else if (right == true && (((enemies[i].rec.y - creature -> rec.y) < distance) && (enemies[i].rec.y - creature -> rec.y) > 0))
+		if (right == true && (((enemies[i].rec.y - creature -> rec.y) < distance) && \
+			(enemies[i].rec.y - creature -> rec.y) > 0))
 		{
 			hit = true;
 			k = i;
@@ -45,6 +48,7 @@ void PlayerAttack(struct Creature * creature, bool up, bool down, bool left, boo
 }
 
 
+// Calculate distance of all enemies and deal damage to player
 bool EnemyAttack(struct Creature * creature)
 {
 	if ((abs(creature -> rec.x - player.rec.x) < 32) && (abs(creature -> rec.y - player.rec.y) < 32))
@@ -56,6 +60,7 @@ bool EnemyAttack(struct Creature * creature)
 }
 
 
+// Kill player if outside of the boder
 bool PlayerDeath()
 {
 	if (player.rec.x < 0 || player.rec.y < 0)

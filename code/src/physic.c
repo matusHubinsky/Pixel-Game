@@ -4,6 +4,8 @@
 #include "map.h"
 #include "battle.h"
 
+
+// update character map, calculate new possition of every character
 void updateMap(lvl * Cmap)
 {
 	int row, collumn;
@@ -33,28 +35,32 @@ void updateMap(lvl * Cmap)
 // colison detection
 bool AABB(float x, float y, int number, t_vertexs * shared)
 {	
+	// TODO: clear
 	int row, collumn;
 	bool can = false;
 	row = y / BLOCK;
 	collumn = x / BLOCK;
 
-	if (map[row][collumn] == 2) DoorMap(shared);
+	// if character is stading at doors, call door teleportation func
+	if (map[row][collumn] == 2) 
+		DoorMap(shared);
 	
 	if (map[row][collumn] != 3)
 	{
 		for (int i = 0; i < ENEMY_NUMBER; i++)
 		{
-			if (number != i)	// cheking enemies
+			// cheking enemies
+			if (number != i)	
 			{
 				if ((x >= enemies[i].rec.x) && (x <= enemies[i].rec.x + BLOCK) && (y >= enemies[i].rec.y) && (y <= enemies[i].rec.y + BLOCK)) return can;
 			}
 	
-			if (number != ENEMY_NUMBER)	  // checking player
+			// checking player
+			if (number != ENEMY_NUMBER)	  
 			{
 				if ((x >= player.rec.x) && (x <= player.rec.x + BLOCK) && (y >= player.rec.y) && (y <= player.rec.y + BLOCK)) return can;			
 			}
 		}
-
 		can = true;
 		return can;
 	}
@@ -62,16 +68,20 @@ bool AABB(float x, float y, int number, t_vertexs * shared)
 }
 
 
+// MAIN FUNC
 void updatePhysic(t_vertexs * shared)
 {
 	float new_x = player.rec.x + (player.velocity_x * player.speed);
 	float new_y = player.rec.y + (player.velocity_y * player.speed);
 
+	// calculate new plyer possition
 	if (player.velocity_x > 0) new_x += BLOCK;
 	if (player.velocity_y > 0) new_y += BLOCK;
 
+	// check players new possition
 	if (AABB(new_x, new_y, ENEMY_NUMBER, shared))
 	{
+		// if there are no collison, player is moved to new possition
 		player.rec.x += (float) player.velocity_x * player.speed;
 		player.rec.y += (float) player.velocity_y * player.speed;
 	}
