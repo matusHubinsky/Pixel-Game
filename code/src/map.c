@@ -1,18 +1,30 @@
+/**
+ * @file map.c
+ * 
+ * @brief operations working with map textures, rewriting map
+ * @author Matus Hubinsky
+ */
+
 #include "map.h"
 #include "textures.h"
 #include "light.h"
 #include "const.h"
 
+
 int lvlN = 0;
-
 lvl map;
-
 long int random(void);
 
 SDL_Rect mapRec[1200];
 SDL_Rect mapSrc[1200];
 SDL_Texture* mapTex[1200];
 
+
+/**
+ * @brief put empty space and edge walls at egdes of the map
+ * @param
+ * @return 
+ */
 void RandomizeMap() 
 {
 	for (int i = 0; i < 30; i++) 
@@ -31,7 +43,12 @@ void RandomizeMap()
 }
 
 
-void CreateMap() // nacitanie textur
+/**
+ * @brief load and set all map textures
+ * @param
+ * @return 
+ */
+void CreateMap()
 {
     int k = 0;
 
@@ -70,7 +87,13 @@ void CreateMap() // nacitanie textur
 }
 
 
-void DoorMap(t_vertexs * shared) // teleportacia pri vstupe do dveri
+/**
+ * @brief teleportation of player from door to door on the next map
+ * @todo top and down teleportation
+ * @param shared, Shared variables
+ * @return 
+ */
+void DoorMap(t_vertexs * shared)
 {
     // printf("Mapa: %i   %i %i\n", lvlN, player.rec.x, player.rec.y);
     if (player.rec.x >= 32 && player.rec.x <= 64)
@@ -102,8 +125,6 @@ void DoorMap(t_vertexs * shared) // teleportacia pri vstupe do dveri
         if (player.rec.x == 640 or player.rec.x == 672) player.rec.y = 768;
     }
     */
-
-    // horna a dolna mapa 
 }
 
 
@@ -140,6 +161,6 @@ void RewriteMap(int first[30][40], int second[30][40], t_vertexs * shared) // zm
 	}
     CreateMap();
     RandomizeMap();
-    CellsMap(0, 0, 40, 30, 32, 40, shared);
+    CellsMap(0, 0, 40, 30, 40, shared);
 }
 

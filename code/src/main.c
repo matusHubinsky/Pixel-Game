@@ -32,6 +32,7 @@ void update(float secondsElapsed, bool KEYS[322], t_vertexs * shared)
 }
 
 
+/*
 // calculate FPS every 8th frame
 // TODO: pointers
 void calculate_fps(int * start, int * end, int * frame_counter, float * sum, float * secondsElapsed)
@@ -46,6 +47,7 @@ void calculate_fps(int * start, int * end, int * frame_counter, float * sum, flo
     } 
     frame_counter++;
 }
+*/
 
 
 int main(int argc, char* args[])
@@ -64,7 +66,7 @@ int main(int argc, char* args[])
     SDL_Event e;
     long long int frameStart;    
     int start = 0, end = 0, frame_counter = 0, frameTime = 0;;
-    float secondsElapsed = 60.0f, sum = 0.0f;
+    float secondsElapsed = 120.0f, sum = 0.0f;
 
     // initialize player
     InitPlayer(&Cmap);
@@ -76,7 +78,6 @@ int main(int argc, char* args[])
     // main game cycle
     while (true)
     {
-        // time counter 
         start = SDL_GetPerformanceCounter();
         frameStart = SDL_GetTicks();
         
@@ -91,6 +92,7 @@ int main(int argc, char* args[])
             {
                 // handle keyboard input
                 keyboard_input(e, KEYS, &shared, &Cmap);
+                update(secondsElapsed, KEYS, &shared);    
             }
             else
             {

@@ -1,31 +1,60 @@
+/**
+ * @file light.c
+ * 
+ * @brief handle all calculation necesseary to draw lighr
+ * @author Matus Hubinsky
+ */
 
 #include "map.h"
 #include "textures.h"
 #include "keyboard.h"
 
-
+/**
+ * @brief delete all points that are too close to each other 
+ * 
+ * Run throught all points and move to shared only points that are not too close to each other.
+ * Then rewrite visibleMap with these new points
+ * 
+ * @bug segfault if turn OFF
+ * @todo compating should be N^2 not N
+ * @param shared Struct of shared variables
+ * @return none 
+ */
 void Merge(t_vertexs * shared)
 {
-    float mistake = 0.01f;
     int k = 0;
+    // determinate how close is too close
+    float mistake = 0.0001f;
     Vedge points[shared -> visible_map_index];
 
     // This shouldn't work
     for (int i = 0; i < shared -> visible_map_index - 1; i++)
     {
+        // compare x value of two points
         if ((fabs(shared -> visibleMap[i].x - shared -> visibleMap[i + 1].x)) > mistake) 
         {
             points[k] = shared -> visibleMap[i];
             k++;
         }
+        // compare y value of two points
         if ((fabs(shared -> visibleMap[i].y - shared -> visibleMap[i + 1].y)) > mistake)
         {
             points[k] = shared -> visibleMap[i];
             k++;
         }
     }
+
+    /*
+    // delete old information
+    for (int i = 0; i < MAP_WIDTH * MAP_HEIGTH; i++)
+    {
+        shared -> visibleMap[shared -> visible_map_index].x = 0.0f;
+        shared -> visibleMap[shared -> visible_map_index].y = 0.0f;
+        shared -> visibleMap[shared -> visible_map_index].a = 0.0f;
+    }
+    */
     
-    // reload new information;
+    // reload new information from shared to visibleMap
     for (int i = 0; i < k; i++)
     {
         shared -> visibleMap[i] = points[i];
@@ -34,12 +63,22 @@ void Merge(t_vertexs * shared)
 }
 
 
-void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch, t_vertexs * shared)
+// This function is derivate of OneLoneCoder's code
+/**
+ * @brief determinate egdes and areas of all shapes that are on the map
+ * @bug
+ * @todo
+ * @param 
+ * @return
+ * @author OneLoneCoder 
+ */
+void CellsMap(int sx, int sy, int w, int h, int pitch, t_vertexs * shared)
 {
     sx += 1;
     sy += 1;
     bool value;
 
+    // cleat poly_map
     for (int i = 0; i < (30*30 + 40); i++)
     {
         shared -> poly_map[i].exist = false;
@@ -61,6 +100,7 @@ void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch, t_vertex
         }
     }
 
+    // clear edgeMap (set everything to -1)
     for (int i = 0; i < shared -> edge_map_index; i++)
     {
         shared -> edgeMap[i].start_x = -1;
@@ -68,10 +108,9 @@ void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch, t_vertex
         shared -> edgeMap[i].end_x = -1;
         shared -> edgeMap[i].end_y = -1;
     }
-
     shared -> edge_map_index = 0;
-    // searching for edges
 
+    // searching for edges
     for (int x = 0; x < w; x++)
     {
         for (int y = 0; y < h; y++)
@@ -181,6 +220,15 @@ void CellsMap(int sx, int sy, int w, int h, int block_width, int pitch, t_vertex
 }
 
 
+// This function is derivate of OneLoneCoder's code
+/**
+ * @brief calculate nearest crossing on the line from player to each object edge
+ * @bug
+ * @todo
+ * @param 
+ * @return
+ * @author OneLoneCoder 
+ */
 void Intersections1(t_vertexs * shared, bool KEYS[322])
 {   
     player.rec.x += 16;
@@ -203,9 +251,9 @@ void Intersections1(t_vertexs * shared, bool KEYS[322])
 
             for (int j = 0; j < 3; j++)
             {
-                if (j == 0) ang = base_ang - 0.00001f;
+                if (j == 0) ang = base_ang - 0.001f;
                 if (j == 1) ang = base_ang;
-                if (j == 2) ang = base_ang + 0.00001f;
+                if (j == 2) ang = base_ang + 0.001f;
 
                 rdx = radius * cosf(ang);
                 rdy = radius * sinf(ang);
@@ -248,11 +296,14 @@ void Intersections1(t_vertexs * shared, bool KEYS[322])
             }
         }
     }
+    // return coords to normal
     player.rec.x -= 16;
     player.rec.y -= 16;
+    
     // this fix is awesome
     Vedge swap;
 
+    // some bubble sort ???
     for (int i = 0; i < shared -> visible_map_index; i++)
     {
         for (int j = 0; j < shared -> visible_map_index; j++)
@@ -265,5 +316,10 @@ void Intersections1(t_vertexs * shared, bool KEYS[322])
             }
         }
     }
+
+    // dissable merging, deafault is enabled
     if (KEYS[SDLK_0]) Merge(shared);
 }
+
+
+/*** End of file light.c ***/

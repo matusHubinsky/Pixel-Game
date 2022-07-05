@@ -18,6 +18,6 @@
 #define SCREEN_HEIGTH 960
 
 #define FPS 60
-#define FRAME_DELAY 15
+#define FRAME_DELAY 10
 
 #endif
