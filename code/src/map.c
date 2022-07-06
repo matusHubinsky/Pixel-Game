@@ -127,8 +127,12 @@ void DoorMap(t_vertexs * shared)
     */
 }
 
-
-void WorldMap() // nastavenie dveri
+/**
+ * @brief set doors
+ * @param
+ * @return 
+ */
+void WorldMap()
 {
     for (int i = 0; i < 4; i++)
     {  
@@ -150,6 +154,16 @@ void WorldMap() // nastavenie dveri
 }
 
 
+/**
+ * @brief rewrite first map with second map
+ * 
+ * This FUNC is used after entering door and before teleporation into next room
+ * 
+ * @param first, first map
+ * @param second, second map
+ * @param shared, shared variable
+ * @return 
+ */
 void RewriteMap(int first[30][40], int second[30][40], t_vertexs * shared) // zmena mapy
 {
 	for (int i = 0; i < 30; i++)
@@ -164,3 +178,4 @@ void RewriteMap(int first[30][40], int second[30][40], t_vertexs * shared) // zm
     CellsMap(0, 0, 40, 30, 40, shared);
 }
 
+/*** End of file map.c ***/

@@ -383,16 +383,16 @@ void DrawFPS(float secondsElapsed)
 
     int i  = 1.0f / secondsElapsed;
     char text[20]; 
-    sprintf(text, "FPS: %d", i);
+    sprintf(text, "FPS: %3d", i);
 
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, text, White); 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
 
     SDL_Rect Message_rect;      // create a rect
-    Message_rect.x = 32*38;     // controls the rect's x coordinate 
+    Message_rect.x = 32*37;     // controls the rect's x coordinate 
     Message_rect.y = 32*0;      // controls the rect's y coordinte
-    Message_rect.w = 50;        // controls the width of the rect
-    Message_rect.h = 20;        // controls the height of the rect
+    Message_rect.w = 75;        // controls the width of the rect
+    Message_rect.h = 25;        // controls the height of the rect
 
     SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
     // Don't forget to free your surface and texture

@@ -1,4 +1,9 @@
-
+/**
+ * @file main.c
+ * 
+ * @brief start game and handle everything
+ * @author Matus Hubinsky
+ */
 #include "init.h"
 #include "keyboard.h"
 #include "textures.h"
@@ -12,13 +17,15 @@ SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 SDL_Texture* texture = NULL;
 
-
 // This don't have to be global
 struct Creature player;
 struct Creature enemies [ENEMY_NUMBER];
 
 
-// update all action
+/**
+ * @brief FUNC to update all actions and prevent same code on multiple places
+ * @return none 
+ */
 void update(float secondsElapsed, bool KEYS[322], t_vertexs * shared)
 {
     // calculate next movement of AI
@@ -32,25 +39,34 @@ void update(float secondsElapsed, bool KEYS[322], t_vertexs * shared)
 }
 
 
-/*
-// calculate FPS every 8th frame
-// TODO: pointers
-void calculate_fps(int * start, int * end, int * frame_counter, float * sum, float * secondsElapsed)
+/**
+ * @brief calculate FPS every Nth frame 
+ * @todo save fps every second into a file
+ * @param start, time when the frame started
+ * @param frame_counter, how many frames have passed
+ * @param secondsEnlapsed, how many seconds have passed
+ * @return none 
+ */
+void calculate_fps(int start, int * frame_counter, float * secondsElapsed)
 {
-    end = SDL_GetPerformanceCounter();
+    float sum = 0.0f;
+    int end = SDL_GetPerformanceCounter();
     sum += (end - start) / (float)SDL_GetPerformanceFrequency();
-    if (frame_counter == FRAME_DELAY)
+    if (*frame_counter == FRAME_DELAY)
     {
-        secondsElapsed = sum / frame_counter;
+        *secondsElapsed = sum / *frame_counter;
         sum = 0.0f; 
-        frame_counter = 0;
+        *frame_counter = 0;
     } 
-    frame_counter++;
+    *frame_counter += 1;
 }
-*/
 
-
-int main(int argc, char* args[])
+/**
+ * @brief keep game running, handle all input events, call all game events 
+ * @param none
+ * @return none 
+ */
+int main()
 {
     t_vertexs shared;
 
@@ -65,8 +81,8 @@ int main(int argc, char* args[])
     lvl Cmap;
     SDL_Event e;
     long long int frameStart;    
-    int start = 0, end = 0, frame_counter = 0, frameTime = 0;;
-    float secondsElapsed = 120.0f, sum = 0.0f;
+    int start = 0, frame_counter = 0, frameTime = 0;
+    float secondsElapsed = 120.0f;
 
     // initialize player
     InitPlayer(&Cmap);
@@ -108,17 +124,11 @@ int main(int argc, char* args[])
             }
         }   
         // count FPS
-        end = SDL_GetPerformanceCounter();
-        sum += (end - start) / (float)SDL_GetPerformanceFrequency();
-        if (frame_counter == FRAME_DELAY)
-        {
-            secondsElapsed = sum / frame_counter;
-            sum = 0.0f; 
-            frame_counter = 0;
-        } 
-        frame_counter++;
+        calculate_fps(start, &frame_counter, &secondsElapsed);
     }
     // just close everything
 	CloseInit();
 	return 0;
 }
+
+/*** End of file main.c ***/

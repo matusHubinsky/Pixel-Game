@@ -321,5 +321,4 @@ void Intersections1(t_vertexs * shared, bool KEYS[322])
     if (KEYS[SDLK_0]) Merge(shared);
 }
 
-
 /*** End of file light.c ***/
